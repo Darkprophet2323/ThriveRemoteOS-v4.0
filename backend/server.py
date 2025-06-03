@@ -650,21 +650,21 @@ async def logout_user(session_token: str):
     
     return {"message": "Logged out successfully"}
 
-# Helper function to get user from session
+# Helper function to get user from session (now optional)
 def get_current_user(session_token: str = None):
-    """Dependency to get current user from session"""
+    """Dependency to get current user from session (optional for demo)"""
     if not session_token:
-        raise HTTPException(status_code=401, detail="Session token required")
+        return "demo_user"  # Default demo user
     
     user_id = get_user_from_session(session_token)
     if not user_id:
-        raise HTTPException(status_code=401, detail="Invalid or expired session")
+        return "demo_user"  # Fallback to demo user
     
     return user_id
 
 def get_session_token_from_request(session_token: str = None):
-    """Extract session token from request"""
-    return session_token
+    """Extract session token from request (optional)"""
+    return session_token or "demo_token"
 
 # API Routes
 
