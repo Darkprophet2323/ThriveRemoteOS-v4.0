@@ -926,20 +926,180 @@ body {
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
 }
 
+/* Enhanced Features Styling */
+.os-desktop.focus-mode {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.os-desktop.focus-mode .desktop-apps {
+  opacity: 0.3;
+  transition: opacity 0.5s ease;
+}
+
+.focus-btn {
+  @apply px-3 py-1 rounded text-xs font-bold bg-purple-600 text-white hover:bg-purple-500 transition-all duration-300;
+}
+
+.focus-btn.active {
+  @apply bg-purple-400 text-purple-900;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+.control-btn {
+  @apply text-cyan-400 hover:text-cyan-300 text-xs font-bold bg-gray-800 bg-opacity-60 px-2 py-1 rounded border border-cyan-500 border-opacity-30 transition-all duration-300;
+}
+
+.control-btn.logout {
+  @apply text-red-400 hover:text-red-300 border-red-500;
+}
+
+/* Enhanced Desktop Apps */
+.desktop-app.enhanced {
+  @apply w-24 h-24 hover:scale-110 transition-all duration-300;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.desktop-app.enhanced:hover {
+  border-color: rgba(34, 211, 238, 0.8);
+  box-shadow: 0 8px 32px rgba(34, 211, 238, 0.2);
+}
+
+.app-description {
+  @apply text-xs text-gray-500 text-center mt-1;
+}
+
+/* Enhanced Notifications */
+.notification.enhanced {
+  @apply border-l-4 backdrop-blur-lg;
+  background: rgba(17, 24, 39, 0.95);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.notification.enhanced:hover {
+  transform: translateX(-5px) scale(1.02);
+}
+
+.notification-time {
+  @apply text-xs text-gray-500 mt-1;
+}
+
+/* Enhanced Top Panel */
+.top-panel.enhanced {
+  @apply bg-black bg-opacity-95 backdrop-blur-md;
+  border-bottom: 2px solid rgba(34, 211, 238, 0.3);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced Windows */
+.window.enhanced {
+  border: 2px solid rgba(34, 211, 238, 0.4);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.9), 
+    0 0 40px rgba(34, 211, 238, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.window-header.enhanced {
+  @apply border-b-2 border-cyan-500 border-opacity-30;
+  background: linear-gradient(90deg, rgba(31, 41, 55, 0.95), rgba(31, 41, 55, 0.8));
+}
+
+/* Enhanced Taskbar */
+.taskbar.enhanced {
+  @apply bg-black bg-opacity-95 backdrop-blur-md;
+  border-top: 2px solid rgba(34, 211, 238, 0.3);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced Login Form */
+.login-description {
+  @apply text-gray-400 text-sm mt-1;
+}
+
+.auth-form input {
+  @apply transition-all duration-300;
+}
+
+.auth-form input:focus {
+  @apply ring-4 ring-cyan-500 ring-opacity-20 border-cyan-400;
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+/* Professional Animations */
+@keyframes pulse-professional {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+.pulse-professional {
+  animation: pulse-professional 3s ease-in-out infinite;
+}
+
+/* Enhanced Focus Mode */
+.os-desktop.focus-mode .notification-container {
+  opacity: 0.7;
+}
+
+.os-desktop.focus-mode .top-panel {
+  background: rgba(0, 0, 0, 0.98);
+}
+
+/* Advanced Gradient Backgrounds */
+.gradient-bg-1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-bg-2 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-bg-3 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Professional Color Schemes */
+.theme-blue {
+  --primary-color: #3b82f6;
+  --secondary-color: #1e40af;
+  --accent-color: #06b6d4;
+}
+
+.theme-purple {
+  --primary-color: #8b5cf6;
+  --secondary-color: #7c3aed;
+  --accent-color: #a855f7;
+}
+
+.theme-green {
+  --primary-color: #10b981;
+  --secondary-color: #059669;
+  --accent-color: #34d399;
+}
+
 /* Enhanced Responsiveness */
 @media (max-width: 768px) {
-  .window {
+  .window.enhanced {
     @apply w-full h-full top-8 left-0 rounded-none;
     min-width: 100%;
     min-height: calc(100vh - 80px);
+    border-radius: 0;
   }
   
   .desktop-apps {
     @apply grid-cols-3 gap-3 px-2;
   }
   
-  .desktop-app {
-    @apply w-16 h-16;
+  .desktop-app.enhanced {
+    @apply w-20 h-20;
   }
   
   .login-form {
@@ -950,7 +1110,42 @@ body {
     @apply right-2 left-2;
   }
   
-  .notification {
+  .notification.enhanced {
     @apply min-w-full;
+  }
+
+  .top-panel.enhanced {
+    flex-wrap: wrap;
+  }
+
+  .system-stats {
+    display: none;
+  }
+}
+
+/* Ultra-wide screen support */
+@media (min-width: 1440px) {
+  .desktop-apps {
+    @apply grid-cols-6 gap-6;
+  }
+  
+  .desktop-app.enhanced {
+    @apply w-28 h-28;
+  }
+  
+  .window.enhanced {
+    min-width: 1000px;
+    min-height: 700px;
+  }
+}
+
+/* High DPI display support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .window.enhanced {
+    border-width: 1px;
+  }
+  
+  .desktop-app.enhanced {
+    border-width: 1px;
   }
 }
