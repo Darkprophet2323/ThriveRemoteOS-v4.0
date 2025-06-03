@@ -1125,10 +1125,10 @@ async def manual_unlock_achievement(achievement_id: str, session_token: str):
         raise HTTPException(status_code=400, detail="Achievement already unlocked or not found")
 
 @app.post("/api/terminal/command")
-async def execute_terminal_command(command: dict, session_token: str):
-    """Execute terminal command and track usage"""
+async def execute_terminal_command(command: dict):
+    """Execute terminal command and track usage (demo mode)"""
     cmd = command.get("command", "").lower().strip()
-    user_id = get_current_user(session_token)
+    user_id = "demo_user"  # Fixed demo user
     user = await get_or_create_user(user_id)
     
     # Increment command counter
