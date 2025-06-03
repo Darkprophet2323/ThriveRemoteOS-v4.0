@@ -4,15 +4,7 @@ import './App.css';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 const App = () => {
-  // Authentication state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [sessionToken, setSessionToken] = useState(localStorage.getItem('session_token'));
-  const [currentUser, setCurrentUser] = useState(null);
-  const [showLogin, setShowLogin] = useState(true);
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
-  const [registerData, setRegisterData] = useState({ username: '', password: '', email: '' });
-
-  // Application state
+  // Application state (no authentication needed)
   const [activeWindows, setActiveWindows] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -30,6 +22,13 @@ const App = () => {
   const [focusMode, setFocusMode] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
+  // Default user for demo purposes
+  const defaultUser = {
+    user_id: 'demo_user',
+    username: 'RemoteWorker',
+    email: 'demo@thriveremote.com'
+  };
+
   // Professional remote work background images
   const backgroundImages = [
     'https://images.unsplash.com/photo-1519389950473-47ba0277781c', // Modern tech office
@@ -41,180 +40,6 @@ const App = () => {
 
   // Konami code sequence
   const KONAMI_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-
-  // Authentication functions with enhanced security
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (!loginData.username.trim() || !loginData.password.trim()) {
-      setNotifications(prev => [...prev, {
-        id: 'validation_error',
-        type: 'error',
-        title: '❌ Validation Error',
-        message: 'Username and password are required',
-        timestamp: new Date().toISOString()
-      }]);
-      return;
-    }
-
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setSessionToken(result.session_token);
-        localStorage.setItem('session_token', result.session_token);
-        setCurrentUser({ user_id: result.user_id, username: result.username });
-        setIsLoggedIn(true);
-        
-        setNotifications(prev => [...prev, {
-          id: 'login_success',
-          type: 'success',
-          title: '🎉 Welcome Back!',
-          message: `Welcome back, ${result.username}!`,
-          timestamp: new Date().toISOString()
-        }]);
-      } else {
-        const error = await response.json();
-        setNotifications(prev => [...prev, {
-          id: 'login_error',
-          type: 'error',
-          title: '❌ Login Failed',
-          message: error.detail || 'Invalid credentials',
-          timestamp: new Date().toISOString()
-        }]);
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      setNotifications(prev => [...prev, {
-        id: 'network_error',
-        type: 'error',
-        title: '🌐 Connection Error',
-        message: 'Unable to connect to server',
-        timestamp: new Date().toISOString()
-      }]);
-    }
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (!registerData.username.trim() || !registerData.password.trim()) {
-      setNotifications(prev => [...prev, {
-        id: 'validation_error',
-        type: 'error',
-        title: '❌ Validation Error',
-        message: 'Username and password are required',
-        timestamp: new Date().toISOString()
-      }]);
-      return;
-    }
-
-    if (registerData.password.length < 6) {
-      setNotifications(prev => [...prev, {
-        id: 'password_error',
-        type: 'error',
-        title: '🔒 Password Too Short',
-        message: 'Password must be at least 6 characters long',
-        timestamp: new Date().toISOString()
-      }]);
-      return;
-    }
-
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(registerData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setSessionToken(result.session_token);
-        localStorage.setItem('session_token', result.session_token);
-        setCurrentUser({ user_id: result.user_id, username: result.username });
-        setIsLoggedIn(true);
-        
-        setNotifications(prev => [...prev, {
-          id: 'register_success',
-          type: 'success',
-          title: '🎉 Account Created!',
-          message: `Welcome to ThriveRemote, ${result.username}!`,
-          timestamp: new Date().toISOString()
-        }]);
-      } else {
-        const error = await response.json();
-        setNotifications(prev => [...prev, {
-          id: 'register_error',
-          type: 'error',
-          title: '❌ Registration Failed',
-          message: error.detail || 'Registration failed',
-          timestamp: new Date().toISOString()
-        }]);
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-      setNotifications(prev => [...prev, {
-        id: 'network_error',
-        type: 'error',
-        title: '🌐 Connection Error',
-        message: 'Unable to connect to server',
-        timestamp: new Date().toISOString()
-      }]);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await fetch(`${BACKEND_URL}/api/auth/logout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ session_token: sessionToken })
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-    
-    localStorage.removeItem('session_token');
-    setSessionToken(null);
-    setCurrentUser(null);
-    setIsLoggedIn(false);
-    setActiveWindows([]);
-    
-    setNotifications(prev => [...prev, {
-      id: 'logout_success',
-      type: 'info',
-      title: '👋 Logged Out',
-      message: 'Your session has been securely ended',
-      timestamp: new Date().toISOString()
-    }]);
-  };
-
-  // Check session on load
-  useEffect(() => {
-    const checkSession = async () => {
-      const token = localStorage.getItem('session_token');
-      if (token) {
-        try {
-          const response = await fetch(`${BACKEND_URL}/api/user/current?session_token=${token}`);
-          if (response.ok) {
-            const user = await response.json();
-            setCurrentUser(user);
-            setSessionToken(token);
-            setIsLoggedIn(true);
-          } else {
-            localStorage.removeItem('session_token');
-          }
-        } catch (error) {
-          localStorage.removeItem('session_token');
-        }
-      }
-    };
-
-    checkSession();
-  }, []);
 
   // Focus Mode Toggle
   const toggleFocusMode = () => {
@@ -255,16 +80,14 @@ const App = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [sessionToken]);
+  }, []);
 
   const triggerKonamiEasterEgg = async () => {
-    if (!sessionToken) return;
-    
     try {
       const response = await fetch(`${BACKEND_URL}/api/terminal/command`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: 'konami', session_token: sessionToken })
+        body: JSON.stringify({ command: 'konami' })
       });
       const result = await response.json();
       
@@ -398,34 +221,52 @@ const App = () => {
     }
   }, [dragging, handleMouseMove, handleMouseUp]);
 
-  // Fetch data and setup real-time updates
+  // Fetch data on startup (no authentication needed)
   useEffect(() => {
-    if (!isLoggedIn || !sessionToken) return;
-
     const fetchData = async () => {
       try {
         const [jobsRes, appsRes, savingsRes, tasksRes, statsRes, achievementsRes, notificationsRes] = await Promise.all([
-          fetch(`${BACKEND_URL}/api/jobs?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/applications?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/savings?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/tasks?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/dashboard/stats?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/achievements?session_token=${sessionToken}`),
-          fetch(`${BACKEND_URL}/api/realtime/notifications?session_token=${sessionToken}`)
+          fetch(`${BACKEND_URL}/api/jobs`),
+          fetch(`${BACKEND_URL}/api/applications`),
+          fetch(`${BACKEND_URL}/api/savings`),
+          fetch(`${BACKEND_URL}/api/tasks`),
+          fetch(`${BACKEND_URL}/api/dashboard/stats`),
+          fetch(`${BACKEND_URL}/api/achievements`),
+          fetch(`${BACKEND_URL}/api/realtime/notifications`)
         ]);
 
-        if (jobsRes.ok) setJobs((await jobsRes.json()).jobs);
-        if (appsRes.ok) setApplications((await appsRes.json()).applications);
+        if (jobsRes.ok) {
+          const jobData = await jobsRes.json();
+          setJobs(jobData.jobs || []);
+        }
+        if (appsRes.ok) {
+          const appData = await appsRes.json();
+          setApplications(appData.applications || []);
+        }
         if (savingsRes.ok) setSavings(await savingsRes.json());
-        if (tasksRes.ok) setTasks((await tasksRes.json()).tasks);
+        if (tasksRes.ok) {
+          const taskData = await tasksRes.json();
+          setTasks(taskData.tasks || []);
+        }
         if (statsRes.ok) setDashboardStats(await statsRes.json());
-        if (achievementsRes.ok) setAchievements((await achievementsRes.json()).achievements);
+        if (achievementsRes.ok) {
+          const achievementData = await achievementsRes.json();
+          setAchievements(achievementData.achievements || []);
+        }
         if (notificationsRes.ok) {
           const notificationData = await notificationsRes.json();
-          setNotifications(prev => [...prev, ...notificationData.notifications]);
+          setNotifications(prev => [...prev, ...(notificationData.notifications || [])]);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Add welcome notification on startup
+        setNotifications([{
+          id: 'welcome',
+          type: 'success',
+          title: '🎉 Welcome to ThriveRemote OS v4.0!',
+          message: 'Your productivity workspace is ready. Start exploring!',
+          timestamp: new Date().toISOString()
+        }]);
       }
     };
 
@@ -437,7 +278,7 @@ const App = () => {
     return () => {
       clearInterval(dataInterval);
     };
-  }, [isLoggedIn, sessionToken]);
+  }, []);
 
   // Update time every second
   useEffect(() => {
@@ -478,135 +319,486 @@ const App = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Enhanced Login/Register Form Component
-  const LoginForm = () => (
-    <div className="login-container">
-      <div className="login-form">
-        <div className="login-header">
-          <h1 className="login-title">ThriveRemote OS v4.0</h1>
-          <p className="login-subtitle">The Ultimate Remote Work Operating System</p>
-          <p className="login-description">Boost productivity, track goals, and thrive in remote work</p>
+  // Window Components
+  const Dashboard = () => (
+    <div className="terminal-content">
+      <div className="terminal-header">
+        <span className="text-cyan-400">thriveremote@system:~$</span> dashboard --stats --realtime --demo-mode
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <div className="stat-card pulse-glow">
+          <div className="stat-value">{applications.length}</div>
+          <div className="stat-label">Applications</div>
         </div>
-        
-        <div className="auth-tabs">
-          <button 
-            className={`auth-tab ${showLogin ? 'active' : ''}`}
-            onClick={() => setShowLogin(true)}
-          >
-            Sign In
-          </button>
-          <button 
-            className={`auth-tab ${!showLogin ? 'active' : ''}`}
-            onClick={() => setShowLogin(false)}
-          >
-            Create Account
-          </button>
+        <div className="stat-card pulse-glow">
+          <div className="stat-value">{Math.floor(Math.random() * 5)}</div>
+          <div className="stat-label">Interviews</div>
         </div>
-
-        {showLogin ? (
-          <form onSubmit={handleLogin} className="auth-form">
-            <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                value={loginData.username}
-                onChange={(e) => setLoginData({...loginData, username: e.target.value})}
-                placeholder="Enter your username"
-                required
-                autoComplete="username"
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                value={loginData.password}
-                onChange={(e) => setLoginData({...loginData, password: e.target.value})}
-                placeholder="Enter your password"
-                required
-                autoComplete="current-password"
-              />
-            </div>
-            <button type="submit" className="auth-button">
-              🚀 Access ThriveRemote
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleRegister} className="auth-form">
-            <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                value={registerData.username}
-                onChange={(e) => setRegisterData({...registerData, username: e.target.value})}
-                placeholder="Choose a unique username"
-                required
-                minLength="3"
-                autoComplete="username"
-              />
-            </div>
-            <div className="form-group">
-              <label>Email (Optional)</label>
-              <input
-                type="email"
-                value={registerData.email}
-                onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
-                placeholder="your@email.com"
-                autoComplete="email"
-              />
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                value={registerData.password}
-                onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
-                placeholder="Create a strong password (min 6 chars)"
-                required
-                minLength="6"
-                autoComplete="new-password"
-              />
-            </div>
-            <button type="submit" className="auth-button">
-              ✨ Start Your Journey
-            </button>
-          </form>
-        )}
-
-        <div className="login-footer">
-          <p>🎯 Professional remote work platform with advanced productivity tools</p>
-          <p>🏆 Track achievements, manage finances, and grow your career</p>
+        <div className="stat-card pulse-glow">
+          <div className="stat-value">{savings ? (savings.progress_percentage || 25).toFixed(1) : '25.0'}%</div>
+          <div className="stat-label">Savings Goal</div>
+        </div>
+        <div className="stat-card pulse-glow">
+          <div className="stat-value">{tasks.filter(t => t.status === 'completed').length}</div>
+          <div className="stat-label">Tasks Completed</div>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <div className="stat-card achievement-glow">
+          <div className="stat-value text-orange-400">7</div>
+          <div className="stat-label">🔥 Daily Streak</div>
+        </div>
+        <div className="stat-card achievement-glow">
+          <div className="stat-value text-purple-400">250</div>
+          <div className="stat-label">📈 Productivity</div>
+        </div>
+        <div className="stat-card achievement-glow">
+          <div className="stat-value text-yellow-400">{achievements.filter(a => a.unlocked).length}/9</div>
+          <div className="stat-label">🏆 Achievements</div>
+        </div>
+        <div className="stat-card achievement-glow">
+          <div className="stat-value text-green-400">150</div>
+          <div className="stat-label">🎮 Pong Score</div>
+        </div>
+      </div>
+      
+      <div className="mt-6">
+        <div className="terminal-line">
+          <span className="text-green-400">●</span> System Status: OPTIMAL
+        </div>
+        <div className="terminal-line">
+          <span className="text-blue-400">●</span> Remote Jobs Monitored: {jobs.length}
+        </div>
+        <div className="terminal-line">
+          <span className="text-purple-400">●</span> Skill Development: 25h
+        </div>
+        <div className="terminal-line">
+          <span className="text-orange-400">🔥</span> Streak Bonus: $175
+        </div>
+        <div className="terminal-line">
+          <span className="text-cyan-400">👤</span> User: {defaultUser.username}
         </div>
       </div>
     </div>
   );
 
-  // Window Components would go here...
-  // [Due to length limits, I'll continue with the component definitions in the next part]
+  const JobSearch = () => (
+    <div className="terminal-content">
+      <div className="terminal-header">
+        <span className="text-cyan-400">thriveremote@system:~$</span> jobs --list --remote --live-data
+      </div>
+      
+      <div className="mb-4">
+        <button 
+          className="apply-btn mr-2"
+          onClick={async () => {
+            try {
+              const response = await fetch(`${BACKEND_URL}/api/jobs/refresh`, {
+                method: 'POST'
+              });
+              const result = await response.json();
+              
+              setNotifications(prev => [...prev, {
+                id: 'jobs_refresh',
+                type: 'success',
+                title: '🔄 Jobs Refreshed!',
+                message: `${result.message || 'Jobs updated successfully'} (+5 points)`,
+                timestamp: new Date().toISOString()
+              }]);
+              
+              // Refresh page to show new jobs
+              setTimeout(() => window.location.reload(), 2000);
+            } catch (error) {
+              console.error('Error refreshing jobs:', error);
+            }
+          }}
+        >
+          🔄 Refresh Live Jobs
+        </button>
+        <span className="text-gray-400 text-sm">Get latest remote opportunities</span>
+      </div>
+      
+      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
+        {jobs.length > 0 ? jobs.slice(0, 10).map((job, index) => (
+          <div key={job.id || index} className="job-card fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h3 className="text-white font-bold">{job.title}</h3>
+                <p className="text-gray-300">{job.company} • {job.location}</p>
+                <p className="text-green-400 font-semibold">{job.salary}</p>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {(job.skills || []).slice(0, 3).map((skill, i) => (
+                    <span key={i} className="skill-tag">{skill}</span>
+                  ))}
+                </div>
+                {job.source && (
+                  <div className="text-xs text-blue-400 mt-1">Source: {job.source}</div>
+                )}
+              </div>
+              <div className="text-right">
+                <span className="status-badge not-applied">
+                  Available
+                </span>
+                <button 
+                  className="apply-btn mt-2"
+                  onClick={() => {
+                    setNotifications(prev => [...prev, {
+                      id: `apply_${job.id || index}`,
+                      type: 'success',
+                      title: '🎯 Demo Application!',
+                      message: `Application to ${job.company} recorded (+15 points)`,
+                      timestamp: new Date().toISOString()
+                    }]);
+                  }}
+                >
+                  Apply Now ⚡
+                </button>
+                {job.url && (
+                  <a 
+                    href={job.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block mt-1 text-xs text-cyan-400 hover:text-cyan-300"
+                  >
+                    View Original →
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )) : (
+          <div className="text-center py-8">
+            <div className="text-cyan-400">🔄 Loading remote job opportunities...</div>
+            <div className="text-gray-400 text-sm mt-2">Click "Refresh Live Jobs" to load data</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const SavingsTracker = () => {
+    const [newAmount, setNewAmount] = useState('');
+    
+    const updateSavings = async () => {
+      if (!newAmount || isNaN(newAmount)) return;
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/savings/update?amount=${parseFloat(newAmount)}`, {
+          method: 'POST'
+        });
+        const result = await response.json();
+        
+        setNotifications(prev => [...prev, {
+          id: 'savings_update',
+          type: 'success',
+          title: '💰 Savings Updated!',
+          message: `${result.message || 'Savings updated successfully'} (+10 points)`,
+          timestamp: new Date().toISOString()
+        }]);
+        
+        setNewAmount('');
+        
+        // Refresh to show updated data
+        setTimeout(() => window.location.reload(), 2000);
+      } catch (error) {
+        console.error('Error updating savings:', error);
+      }
+    };
+
+    const defaultSavings = savings || {
+      current_amount: 1250,
+      progress_percentage: 25,
+      monthly_target: 500,
+      months_to_goal: 8,
+      streak_bonus: 175,
+      daily_streak: 7
+    };
+
+    return (
+      <div className="terminal-content">
+        <div className="terminal-header">
+          <span className="text-cyan-400">thriveremote@system:~$</span> savings --progress --goal=5000 --demo-mode
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex gap-2 mb-2">
+            <input
+              type="number"
+              value={newAmount}
+              onChange={(e) => setNewAmount(e.target.value)}
+              placeholder="Enter new savings amount"
+              className="terminal-input flex-1 px-3 py-2 bg-gray-800 text-white rounded border border-gray-600"
+            />
+            <button onClick={updateSavings} className="apply-btn">
+              💰 Update Savings
+            </button>
+          </div>
+          <span className="text-gray-400 text-sm">Track your savings progress & earn streak bonuses</span>
+        </div>
+
+        <div className="mt-4">
+          <div className="savings-progress-container achievement-glow">
+            <div className="flex justify-between text-white mb-2">
+              <span>Progress to $5,000 Goal</span>
+              <span>${defaultSavings.current_amount.toFixed(2)}</span>
+            </div>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${defaultSavings.progress_percentage}%` }}
+              ></div>
+            </div>
+            <div className="text-center mt-2 text-green-400 font-bold">
+              {defaultSavings.progress_percentage.toFixed(1)}% Complete
+            </div>
+            {defaultSavings.streak_bonus > 0 && (
+              <div className="text-center mt-1 text-orange-400 text-sm">
+                🔥 Streak Bonus: +${defaultSavings.streak_bonus} ({defaultSavings.daily_streak} days)
+              </div>
+            )}
+          </div>
+          
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="stat-card">
+              <div className="stat-value">${defaultSavings.monthly_target}</div>
+              <div className="stat-label">Monthly Target</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{defaultSavings.months_to_goal}</div>
+              <div className="stat-label">Months to Goal</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">${(5000 - defaultSavings.current_amount).toFixed(0)}</div>
+              <div className="stat-label">Remaining</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const TaskManager = () => (
+    <div className="terminal-content">
+      <div className="terminal-header">
+        <span className="text-cyan-400">thriveremote@system:~$</span> tasks --status --priority --demo-mode
+      </div>
+      
+      <div className="flex gap-2 mb-4">
+        <button className="apply-btn">
+          📤 Upload Tasks
+        </button>
+        <button className="apply-btn">
+          📥 Download Tasks
+        </button>
+        <button 
+          className="apply-btn"
+          onClick={() => {
+            setNotifications(prev => [...prev, {
+              id: 'task_created',
+              type: 'success',
+              title: '📋 Demo Task Created!',
+              message: 'New task added to your list (+5 points)',
+              timestamp: new Date().toISOString()
+            }]);
+          }}
+        >
+          ➕ Add Task
+        </button>
+      </div>
+
+      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
+        {tasks.length > 0 ? tasks.map((task, index) => (
+          <div key={task.id || index} className="task-card fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h4 className="text-white font-semibold">{task.title}</h4>
+                <p className="text-gray-300 text-sm">{task.description}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className={`priority-badge ${task.priority}`}>{task.priority}</span>
+                  <span className="category-badge">{task.category}</span>
+                  {task.due_date && (
+                    <span className="text-yellow-400 text-xs">Due: {task.due_date}</span>
+                  )}
+                </div>
+              </div>
+              <span className={`status-badge ${(task.status || 'todo').replace('_', '-')}`}>
+                {(task.status || 'todo').replace('_', ' ')}
+              </span>
+            </div>
+          </div>
+        )) : (
+          <div className="text-center py-8">
+            <div className="text-cyan-400">📋 No tasks yet</div>
+            <div className="text-gray-400 text-sm mt-2">Click "Add Task" to create your first task</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const Terminal = () => {
+    const [terminalInput, setTerminalInput] = useState('');
+    const [terminalHistory, setTerminalHistory] = useState([
+      { text: 'ThriveRemote Terminal v4.0 - Instant Access Productivity Center 🚀', type: 'title' },
+      { text: 'No login required! Start being productive immediately!', type: 'subtitle' },
+      { text: 'Type "help" for available commands', type: 'info' },
+      { text: '', type: 'blank' }
+    ]);
+
+    const handleTerminalCommand = async (e) => {
+      if (e.key === 'Enter' && terminalInput.trim()) {
+        const command = terminalInput.trim();
+        const newHistory = [...terminalHistory, { text: `thriveremote@system:~$ ${command}`, type: 'command' }];
+        
+        try {
+          const response = await fetch(`${BACKEND_URL}/api/terminal/command`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command })
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            if (result.output && Array.isArray(result.output)) {
+              result.output.forEach(line => {
+                // Determine line type based on content for coloring
+                let lineType = 'output';
+                if (line.includes('✅') || line.includes('SUCCESS') || line.includes('Found')) lineType = 'success';
+                else if (line.includes('❌') || line.includes('ERROR') || line.includes('Failed')) lineType = 'error';
+                else if (line.includes('💰') || line.includes('🔥') || line.includes('📈')) lineType = 'highlight';
+                else if (line.includes('🎯') || line.includes('PRODUCTIVITY') || line.includes('STATS')) lineType = 'stats';
+                else if (line.includes('🏡') || line.includes('RELOCATION') || line.includes('PROPERTIES')) lineType = 'relocation';
+                else if (line.includes('🎮') || line.includes('EASTER') || line.includes('KONAMI')) lineType = 'gaming';
+                else if (line.startsWith('  ') && line.includes('-')) lineType = 'list';
+                else if (line.includes('💡') || line.includes('TIP')) lineType = 'tip';
+                
+                newHistory.push({ text: line, type: lineType });
+              });
+            } else {
+              newHistory.push({ text: 'Command executed successfully', type: 'success' });
+            }
+          } else {
+            newHistory.push({ text: `Server error: ${response.status}`, type: 'error' });
+          }
+        } catch (error) {
+          newHistory.push({ text: `Network error: Unable to connect to server`, type: 'error' });
+          console.error('Terminal command error:', error);
+        }
+        
+        setTerminalHistory(newHistory);
+        setTerminalInput('');
+      }
+    };
+
+    const getLineClassName = (type) => {
+      switch (type) {
+        case 'title': return 'terminal-line terminal-title';
+        case 'subtitle': return 'terminal-line terminal-subtitle';
+        case 'command': return 'terminal-line terminal-command';
+        case 'success': return 'terminal-line terminal-success';
+        case 'error': return 'terminal-line terminal-error';
+        case 'highlight': return 'terminal-line terminal-highlight';
+        case 'stats': return 'terminal-line terminal-stats';
+        case 'relocation': return 'terminal-line terminal-relocation';
+        case 'gaming': return 'terminal-line terminal-gaming';
+        case 'list': return 'terminal-line terminal-list';
+        case 'tip': return 'terminal-line terminal-tip';
+        case 'info': return 'terminal-line terminal-info';
+        case 'blank': return 'terminal-line';
+        default: return 'terminal-line terminal-output';
+      }
+    };
+
+    return (
+      <div 
+        className="terminal-content garuda-terminal"
+        style={{
+          backgroundColor: `rgba(0, 0, 0, ${Math.max(0.7, transparency / 100)})`,
+          backdropFilter: `blur(${Math.max(8, (100 - transparency) / 8)}px)`
+        }}
+      >
+        <div className="terminal-header-enhanced">
+          <span className="terminal-prompt">thriveremote@system:~$</span> terminal --instant-access --no-auth-required
+        </div>
+        <div className="terminal-output space-y-1 mb-4 max-h-64 overflow-y-auto">
+          {terminalHistory.map((line, index) => (
+            <div key={index} className={getLineClassName(line.type)}>
+              {line.text}
+            </div>
+          ))}
+        </div>
+        <div className="terminal-input-line">
+          <span className="terminal-prompt">thriveremote@system:~$</span>
+          <input
+            type="text"
+            value={terminalInput}
+            onChange={(e) => setTerminalInput(e.target.value)}
+            onKeyDown={handleTerminalCommand}
+            className="terminal-input ml-2 flex-1"
+            placeholder="Enter command... (try 'help', 'stats', or 'motivate')"
+            autoFocus
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const Achievements = () => (
+    <div className="terminal-content">
+      <div className="terminal-header">
+        <span className="text-cyan-400">thriveremote@system:~$</span> achievements --list --progress --instant-access
+      </div>
+      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
+        {achievements.length > 0 ? achievements.map((achievement, index) => (
+          <div 
+            key={achievement.id || index} 
+            className={`achievement-card ${achievement.unlocked ? 'unlocked' : 'locked'} fade-in-up`}
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="text-4xl">{achievement.icon}</div>
+              <div className="flex-1">
+                <h4 className="text-white font-bold">{achievement.title}</h4>
+                <p className="text-gray-300 text-sm">{achievement.description}</p>
+                {achievement.unlocked && achievement.unlock_date && (
+                  <p className="text-green-400 text-xs">
+                    Unlocked: {new Date(achievement.unlock_date).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+              <div className={`achievement-status ${achievement.unlocked ? 'unlocked' : 'locked'}`}>
+                {achievement.unlocked ? '✓' : '🔒'}
+              </div>
+            </div>
+          </div>
+        )) : (
+          <div className="text-center py-8">
+            <div className="text-cyan-400">🏆 No achievements data loaded</div>
+            <div className="text-gray-400 text-sm mt-2">Use the platform to unlock achievements!</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   const renderWindowContent = (component) => {
-    // This function will render different components based on the component name
     switch (component) {
-      case 'Dashboard': return <div className="terminal-content"><div className="text-cyan-400">Dashboard Coming Soon - Advanced Analytics & Real-time Metrics</div></div>;
-      case 'JobSearch': return <div className="terminal-content"><div className="text-cyan-400">Job Search - Live Remote Opportunities</div></div>;
-      case 'SavingsTracker': return <div className="terminal-content"><div className="text-cyan-400">Financial Goals - Smart Savings Tracking</div></div>;
-      case 'TaskManager': return <div className="terminal-content"><div className="text-cyan-400">Task Manager - AI-Powered Productivity</div></div>;
-      case 'Calendar': return <div className="terminal-content"><div className="text-cyan-400">Smart Calendar - Schedule Optimization</div></div>;
-      case 'Notes': return <div className="terminal-content"><div className="text-cyan-400">Intelligent Notes - AI-Enhanced Note Taking</div></div>;
-      case 'Network': return <div className="terminal-content"><div className="text-cyan-400">Professional Network - Connect & Grow</div></div>;
-      case 'LearningHub': return <div className="terminal-content"><div className="text-cyan-400">Learning Hub - Skill Development & Courses</div></div>;
-      case 'Terminal': return <div className="terminal-content"><div className="text-cyan-400">Advanced Terminal - Power User Commands</div></div>;
-      case 'Settings': return <div className="terminal-content"><div className="text-cyan-400">System Settings - Customize Your Experience</div></div>;
-      case 'Achievements': return <div className="terminal-content"><div className="text-cyan-400">Achievement System - Track Your Progress</div></div>;
-      case 'Analytics': return <div className="terminal-content"><div className="text-cyan-400">Analytics Dashboard - Productivity Insights</div></div>;
+      case 'Dashboard': return <Dashboard />;
+      case 'JobSearch': return <JobSearch />;
+      case 'SavingsTracker': return <SavingsTracker />;
+      case 'TaskManager': return <TaskManager />;
+      case 'Calendar': return <div className="terminal-content"><div className="text-cyan-400">Smart Calendar - Schedule Optimization (Demo Mode)</div></div>;
+      case 'Notes': return <div className="terminal-content"><div className="text-cyan-400">Intelligent Notes - AI-Enhanced Note Taking (Demo Mode)</div></div>;
+      case 'Network': return <div className="terminal-content"><div className="text-cyan-400">Professional Network - Connect & Grow (Demo Mode)</div></div>;
+      case 'LearningHub': return <div className="terminal-content"><div className="text-cyan-400">Learning Hub - Skill Development & Courses (Demo Mode)</div></div>;
+      case 'Terminal': return <Terminal />;
+      case 'Settings': return <div className="terminal-content"><div className="text-cyan-400">System Settings - Customize Your Experience (Demo Mode)</div></div>;
+      case 'Achievements': return <Achievements />;
+      case 'Analytics': return <div className="terminal-content"><div className="text-cyan-400">Analytics Dashboard - Productivity Insights (Demo Mode)</div></div>;
       default: return <div className="terminal-content"><div className="text-cyan-400">Application Loading...</div></div>;
     }
   };
-
-  // Show login form if not logged in
-  if (!isLoggedIn) {
-    return <LoginForm />;
-  }
 
   return (
     <div className={`os-desktop ${darkMode ? 'dark' : 'light'} ${focusMode ? 'focus-mode' : ''}`}>
@@ -644,7 +836,7 @@ const App = () => {
         <div className="flex items-center">
           <div className="os-logo">ThriveRemote OS v4.0</div>
           <div className="ml-4 text-xs text-green-400">
-            👤 {currentUser?.username} | 🔥 {dashboardStats?.daily_streak || 0} day streak | 📈 {dashboardStats?.productivity_score || 0} points
+            👤 {defaultUser.username} | 🔥 7 day streak | 📈 250 points | ⚡ Instant Access
           </div>
           <div className="ml-auto flex items-center space-x-4">
             <button 
@@ -674,12 +866,6 @@ const App = () => {
             >
               🖼️ Theme
             </button>
-            <button 
-              onClick={handleLogout}
-              className="control-btn logout"
-            >
-              Logout
-            </button>
             <div className="system-stats">
               CPU: {Math.floor(Math.random() * 30 + 10)}% | RAM: {(Math.random() * 4 + 4).toFixed(1)}GB
             </div>
@@ -701,7 +887,7 @@ const App = () => {
           >
             <div className="app-icon">{app.icon}</div>
             <div className="app-name">{app.name}</div>
-            <div className="app-description">Professional Tools</div>
+            <div className="app-description">Instant Access</div>
           </div>
         ))}
       </div>
@@ -758,7 +944,7 @@ const App = () => {
       <div className="taskbar enhanced">
         <div className="taskbar-left">
           <div className="start-menu">
-            <span className="text-cyan-400">⚡</span> ThriveRemote v4.0
+            <span className="text-cyan-400">⚡</span> ThriveRemote v4.0 - Instant Access
           </div>
         </div>
         <div className="taskbar-center">
