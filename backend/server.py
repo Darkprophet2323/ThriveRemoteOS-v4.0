@@ -678,8 +678,8 @@ async def root():
     }
 
 @app.get("/api/user/current")
-async def get_current_user_info(session_token: str):
-    """Get current user information"""
+async def get_current_user_info(session_token: str = None):
+    """Get current user information (demo mode)"""
     user_id = get_current_user(session_token)
     user = await get_or_create_user(user_id)
     
@@ -688,8 +688,8 @@ async def get_current_user_info(session_token: str):
     return safe_user
 
 @app.get("/api/jobs")
-async def get_jobs(session_token: str):
-    """Get real job listings"""
+async def get_jobs(session_token: str = None):
+    """Get real job listings (no auth required)"""
     user_id = get_current_user(session_token)
     
     # Ensure fresh data
@@ -701,8 +701,8 @@ async def get_jobs(session_token: str):
     return {"jobs": jobs, "total": len(jobs), "source": "live_api"}
 
 @app.post("/api/jobs/refresh")
-async def refresh_jobs(session_token: str):
-    """Manually refresh job listings"""
+async def refresh_jobs(session_token: str = None):
+    """Manually refresh job listings (no auth required)"""
     user_id = get_current_user(session_token)
     await get_or_create_user(user_id)
     count = await job_service.refresh_jobs()
@@ -712,8 +712,8 @@ async def refresh_jobs(session_token: str):
     return {"message": f"Refreshed {count} live job listings", "count": count}
 
 @app.post("/api/jobs/{job_id}/apply")
-async def apply_to_job(job_id: str, session_token: str):
-    """Apply to a real job"""
+async def apply_to_job(job_id: str, session_token: str = None):
+    """Apply to a real job (demo mode)"""
     user_id = get_current_user(session_token)
     user = await get_or_create_user(user_id)
     
@@ -758,8 +758,8 @@ async def apply_to_job(job_id: str, session_token: str):
     }
 
 @app.get("/api/applications")
-async def get_applications(session_token: str):
-    """Get user's job applications"""
+async def get_applications(session_token: str = None):
+    """Get user's job applications (demo mode)"""
     user_id = get_current_user(session_token)
     await get_or_create_user(user_id)
     
@@ -771,8 +771,8 @@ async def get_applications(session_token: str):
     return {"applications": applications, "total": len(applications)}
 
 @app.get("/api/savings")
-async def get_savings(session_token: str):
-    """Get user's real savings data"""
+async def get_savings(session_token: str = None):
+    """Get user's real savings data (demo mode)"""
     user_id = get_current_user(session_token)
     user = await get_or_create_user(user_id)
     
@@ -803,8 +803,8 @@ async def get_savings(session_token: str):
     return savings_data
 
 @app.post("/api/savings/update")
-async def update_savings(amount: float, session_token: str):
-    """Update user's savings amount"""
+async def update_savings(amount: float, session_token: str = None):
+    """Update user's savings amount (demo mode)"""
     user_id = get_current_user(session_token)
     user = await get_or_create_user(user_id)
     
