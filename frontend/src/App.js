@@ -877,6 +877,8 @@ const App = () => {
     switch (component) {
       case 'NetworkScanner': return <NetworkScanner />;
       case 'JobHunter': return <JobHunter />;
+      case 'RelocationMatrix': return <RelocationMatrix />;
+      case 'FinancialTracker': return <FinancialTracker />;
       case 'TaskCommander': return <TaskCommander />;
       case 'LearningVault': return <LearningVault />;
       case 'NetworkGames': return <NetworkGames />;
