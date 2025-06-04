@@ -1175,29 +1175,220 @@ const App = () => {
       </div>
     );
   };
-    <div className="network-games">
-      <div className="games-header">
-        <span className="games-prompt">games@network:~$</span> load-entertainment-protocols
+  const RelocationMatrix = () => (
+    <div className="relocation-matrix">
+      <div className="relocation-header">
+        <span className="relocation-prompt">relocation@matrix:~$</span> analyze-route --arizona-to-peak-district
       </div>
       
-      <div className="games-grid">
-        <div className="game-card" onClick={() => openWindow('pong_terminal', 'RETRO PONG', 'PongGame')}>
-          <div className="game-icon">🏓</div>
-          <div className="game-title">RETRO PONG</div>
-          <div className="game-desc">Classic arcade action</div>
-          <div className="high-score">High Score: {userStats.totalPoints}</div>
-        </div>
-        
-        <div className="game-card" onClick={() => openWindow('snake_protocol', 'SNAKE PROTOCOL', 'SnakeGame')}>
-          <div className="game-icon">🐍</div>
-          <div className="game-title">SNAKE PROTOCOL</div>
-          <div className="game-desc">Terminal snake game</div>
+      <div className="relocation-tools">
+        <div className="relocation-section">
+          <h3>🏡 PROPERTY SEARCH & ANALYSIS</h3>
+          <div className="relocation-links">
+            <a href="https://rightmove.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏠 Rightmove UK Properties
+            </a>
+            <a href="https://zoopla.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏘️ Zoopla Property Portal
+            </a>
+            <a href="https://onthemarket.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📍 OnTheMarket
+            </a>
+            <a href="https://primelocation.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⭐ Prime Location
+            </a>
+            <a href="https://spareroom.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🛏️ SpareRoom Rentals
+            </a>
+            <a href="https://openrent.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🔑 OpenRent
+            </a>
+          </div>
         </div>
 
-        <div className="game-card" onClick={() => openWindow('matrix_rain', 'MATRIX RAIN', 'MatrixRain')}>
-          <div className="game-icon">🌧️</div>
-          <div className="game-title">MATRIX RAIN</div>
-          <div className="game-desc">Digital meditation</div>
+        <div className="relocation-section">
+          <h3>📊 COST OF LIVING COMPARISON</h3>
+          <div className="relocation-links">
+            <a href="https://numbeo.com/cost-of-living/compare_cities.jsp?country1=United+States&city1=Phoenix%2C+AZ&country2=United+Kingdom&city2=Sheffield" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📊 Numbeo Cost Compare
+            </a>
+            <a href="https://expatistan.com/cost-of-living/comparison/phoenix/sheffield" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💰 Expatistan Compare
+            </a>
+            <a href="https://teleport.org/compare/phoenix-vs-sheffield/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 Teleport Cities
+            </a>
+            <a href="https://livingcost.org/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💡 Living Cost Calculator
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🛂 VISA & IMMIGRATION</h3>
+          <div className="relocation-links">
+            <a href="https://gov.uk/government/organisations/uk-visas-and-immigration" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🇬🇧 UK Visas & Immigration
+            </a>
+            <a href="https://gov.uk/skilled-worker-visa" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💼 Skilled Worker Visa
+            </a>
+            <a href="https://gov.uk/global-talent-visa" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌟 Global Talent Visa
+            </a>
+            <a href="https://britishcouncil.org/exam/ielts" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📝 IELTS English Test
+            </a>
+            <a href="https://oisc.gov.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⚖️ Immigration Advisers
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>📦 INTERNATIONAL MOVING</h3>
+          <div className="relocation-links">
+            <a href="https://sevencorners.com/international-moving" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📦 Seven Corners Moving
+            </a>
+            <a href="https://alliedvanlines.com/moving-tips/international" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚚 Allied International
+            </a>
+            <a href="https://sirelo.com/international-moving/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 Sirelo Moving Guide
+            </a>
+            <a href="https://expatfocus.com/moving-abroad" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🎯 Expat Focus Guide
+            </a>
+            <a href="https://makemydrivefun.com" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚗 Drive Route Optimizer
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🏥 HEALTHCARE & SERVICES</h3>
+          <div className="relocation-links">
+            <a href="https://nhs.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏥 NHS Healthcare
+            </a>
+            <a href="https://gov.uk/nhs-entitlements-costs" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💷 NHS Costs & Entitlements
+            </a>
+            <a href="https://bupa.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏥 Bupa Private Health
+            </a>
+            <a href="https://axa-health.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🩺 AXA Health Insurance
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🚌 TRANSPORT & TRAVEL</h3>
+          <div className="relocation-links">
+            <a href="https://nationalrail.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚂 National Rail
+            </a>
+            <a href="https://traveline.info/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚌 Traveline Public Transport
+            </a>
+            <a href="https://aa.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚗 AA Route Planner
+            </a>
+            <a href="https://google.com/maps" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🗺️ Google Maps
+            </a>
+            <a href="https://citymapper.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📱 Citymapper
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🎓 EDUCATION & SCHOOLS</h3>
+          <div className="relocation-links">
+            <a href="https://gov.uk/school-admissions" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏫 UK School Admissions
+            </a>
+            <a href="https://compare-school-performance.service.gov.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📊 School Performance Data
+            </a>
+            <a href="https://ucas.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🎓 UCAS Universities
+            </a>
+            <a href="https://sheffield.ac.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏛️ University of Sheffield
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🏦 BANKING & FINANCE</h3>
+          <div className="relocation-links">
+            <a href="https://lloydsbank.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏦 Lloyds Bank
+            </a>
+            <a href="https://hsbc.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 HSBC International
+            </a>
+            <a href="https://barclays.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💳 Barclays Banking
+            </a>
+            <a href="https://monzo.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📱 Monzo Digital Bank
+            </a>
+            <a href="https://xe.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💱 XE Currency Exchange
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>📱 UK LIFESTYLE & UTILITIES</h3>
+          <div className="relocation-links">
+            <a href="https://ofcom.org.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📡 Ofcom Communications
+            </a>
+            <a href="https://bt.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📞 BT Broadband & Phone
+            </a>
+            <a href="https://sky.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📺 Sky TV & Internet
+            </a>
+            <a href="https://uswitch.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⚡ uSwitch Utilities
+            </a>
+            <a href="https://comparethemarket.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🔍 Compare the Market
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="relocation-summary">
+        <h3>📈 ARIZONA → PEAK DISTRICT SUMMARY</h3>
+        <div className="summary-stats">
+          <div className="summary-item">
+            <span className="summary-label">💰 Living Costs:</span>
+            <span className="summary-value">-20% cheaper</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🏠 Housing:</span>
+            <span className="summary-value">+15% more expensive</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🚌 Transport:</span>
+            <span className="summary-value">+40% savings</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🏥 Healthcare:</span>
+            <span className="summary-value">FREE NHS</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">💸 Moving Cost:</span>
+            <span className="summary-value">£8,000-£12,000</span>
+          </div>
         </div>
       </div>
     </div>
