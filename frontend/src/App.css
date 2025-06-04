@@ -1,12 +1,18 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* THRIVEREMOTE NETWORK PORTAL - MATRIX HACKER INTERFACE */
 
-/* OS Desktop Styles - Enhanced Garuda Linux Inspired with Professional Backgrounds */
-.os-desktop {
-  @apply h-screen w-screen overflow-hidden relative;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'JetBrains Mono', monospace;
+  overflow: hidden;
+  cursor: none;
+  background: #000;
 }
 
 .desktop-bg {
