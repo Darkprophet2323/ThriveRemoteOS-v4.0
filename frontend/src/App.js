@@ -4,7 +4,15 @@ import './App.css';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 const App = () => {
-  // Application state (no authentication needed)
+  // System state
+  const [systemInitialized, setSystemInitialized] = useState(false);
+  const [matrixLoading, setMatrixLoading] = useState(true);
+  const [accessGranted, setAccessGranted] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState('matrix');
+  const [networkConnected, setNetworkConnected] = useState(false);
+  const [securityLevel, setSecurityLevel] = useState('CLASSIFIED');
+
+  // Application state
   const [activeWindows, setActiveWindows] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -14,105 +22,117 @@ const App = () => {
   const [achievements, setAchievements] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [konamiSequence, setKonamiSequence] = useState([]);
   const [dragging, setDragging] = useState(null);
-  const [relocateData, setRelocateData] = useState(null);
   const [backgroundIndex, setBackgroundIndex] = useState(0);
-  const [transparency, setTransparency] = useState(85);
-  const [focusMode, setFocusMode] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [transparency, setTransparency] = useState(95);
+  const [terminalAccess, setTerminalAccess] = useState(false);
+  const [userStats, setUserStats] = useState({
+    streakDays: 15,
+    totalPoints: 2847,
+    networkPenetrations: 23,
+    systemsAccessed: 7,
+    dataExtracted: '127.3 GB'
+  });
 
-  // Default user for demo purposes
-  const defaultUser = {
-    user_id: 'demo_user',
-    username: 'RemoteWorker',
-    email: 'demo@thriveremote.com'
-  };
+  // User cursor tracking
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [dotLock, setDotLock] = useState(false);
 
-  // Professional remote work background images
-  const backgroundImages = [
-    'https://images.unsplash.com/photo-1519389950473-47ba0277781c', // Modern tech office
-    'https://images.unsplash.com/photo-1497366216548-37526070297c', // Remote workspace
-    'https://images.unsplash.com/photo-1531482615713-2afd69097998', // Modern city skyline
-    'https://images.unsplash.com/photo-1451187580459-43490279c0fa', // Tech/Digital theme
-    'https://images.unsplash.com/photo-1518709268805-4e9042af2176'  // Minimalist workspace
+  // Network background scenery
+  const networkBackgrounds = [
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', // Forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4', // Mountain lake
+    'https://images.unsplash.com/photo-1447758902204-850440cd4d6d', // Countryside
+    'https://images.unsplash.com/photo-1439066615861-d1af74d74000', // Nature scene
+    'https://images.unsplash.com/photo-1501594907352-04cda38ebc29'  // Forest path
   ];
 
-  // Konami code sequence
-  const KONAMI_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-
-  // Focus Mode Toggle
-  const toggleFocusMode = () => {
-    setFocusMode(!focusMode);
-    if (!focusMode) {
-      // Enable focus mode
-      setActiveWindows(windows => windows.map(w => ({...w, minimized: true})));
-      setNotifications(prev => [...prev, {
-        id: 'focus_mode',
-        type: 'info',
-        title: '🎯 Focus Mode Enabled',
-        message: 'Distractions minimized. Stay productive!',
-        timestamp: new Date().toISOString()
-      }]);
-    } else {
-      setNotifications(prev => [...prev, {
-        id: 'focus_mode_off',
-        type: 'info',
-        title: '🎯 Focus Mode Disabled',
-        message: 'Welcome back to full productivity mode!',
-        timestamp: new Date().toISOString()
-      }]);
+  // Themes
+  const themes = {
+    matrix: {
+      name: 'MATRIX PROTOCOL',
+      primary: '#00ff41',
+      secondary: '#008f11',
+      background: 'linear-gradient(0deg, #000000 0%, #001100 100%)',
+      windowBg: 'rgba(0, 0, 0, 0.95)',
+      textColor: '#00ff41'
+    },
+    retro: {
+      name: 'RETRO TERMINAL',
+      primary: '#ff6600',
+      secondary: '#cc3300',
+      background: 'linear-gradient(45deg, #2d1810 0%, #1a0a00 100%)',
+      windowBg: 'rgba(45, 24, 16, 0.95)',
+      textColor: '#ff6600'
+    },
+    future: {
+      name: 'FUTURE AI',
+      primary: '#00d4ff',
+      secondary: '#0099cc',
+      background: 'linear-gradient(135deg, #0a0a1e 0%, #1e0a3e 100%)',
+      windowBg: 'rgba(10, 10, 30, 0.95)',
+      textColor: '#00d4ff'
+    },
+    stealth: {
+      name: 'STEALTH MODE',
+      primary: '#ff0040',
+      secondary: '#990026',
+      background: 'linear-gradient(180deg, #1a0000 0%, #000000 100%)',
+      windowBg: 'rgba(26, 0, 0, 0.95)',
+      textColor: '#ff0040'
     }
   };
 
-  // Handle Konami code
+  // Matrix loading animation
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      setKonamiSequence(prev => {
-        const newSequence = [...prev, e.code].slice(-10);
-        if (JSON.stringify(newSequence) === JSON.stringify(KONAMI_CODE)) {
-          triggerKonamiEasterEgg();
-          return [];
-        }
-        return newSequence;
-      });
+    if (matrixLoading) {
+      const timer = setTimeout(() => {
+        setMatrixLoading(false);
+        setSystemInitialized(true);
+        setNetworkConnected(true);
+        setNotifications([{
+          id: 'system_init',
+          type: 'success',
+          title: '🔒 SYSTEM ACCESS GRANTED',
+          message: 'THRIVEREMOTE NETWORK PORTAL INITIALIZED',
+          timestamp: new Date().toISOString()
+        }]);
+      }, 18000); // 18 seconds matrix loading
+
+      return () => clearTimeout(timer);
+    }
+  }, [matrixLoading]);
+
+  // Cursor tracking with dot lock
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+      
+      // Dot lock mechanism
+      const isOnDot = (e.clientX % 20 < 10) && (e.clientY % 20 < 10);
+      if (isOnDot && !dotLock) {
+        setDotLock(true);
+        setTimeout(() => setDotLock(false), 150);
+      }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const triggerKonamiEasterEgg = async () => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/terminal/command`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command: 'konami' })
-      });
-      const result = await response.json();
-      
-      setNotifications(prev => [...prev, {
-        id: 'konami',
-        type: 'achievement',
-        title: '🎮 Konami Code Activated!',
-        message: 'Ultimate productivity boost! +100 points',
-        timestamp: new Date().toISOString()
-      }]);
-      
-      // Enhanced visual effect
-      document.body.style.animation = 'rainbow 3s ease-in-out';
-      setTimeout(() => {
-        document.body.style.animation = '';
-      }, 3000);
-      
-      console.log('Konami code activated!', result);
-    } catch (error) {
-      console.error('Konami easter egg failed:', error);
-    }
-  };
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, [dotLock]);
 
   // Enhanced window management
-  const openWindow = (windowId, title, component) => {
+  const openWindow = (windowId, title, component, requiresAuth = false) => {
+    if (requiresAuth && !terminalAccess) {
+      setNotifications(prev => [...prev, {
+        id: 'access_denied',
+        type: 'error',
+        title: '🚫 ACCESS DENIED',
+        message: 'TERMINAL AUTHORIZATION REQUIRED - TYPE "Y" TO CONFIRM',
+        timestamp: new Date().toISOString()
+      }]);
+      return;
+    }
+
     if (!activeWindows.find(w => w.id === windowId)) {
       const newWindow = {
         id: windowId,
@@ -120,12 +140,13 @@ const App = () => {
         component,
         minimized: false,
         position: { 
-          x: Math.max(50, 50 + (activeWindows.length * 40)), 
-          y: Math.max(50, 50 + (activeWindows.length * 40)) 
+          x: Math.max(50, 50 + (activeWindows.length * 60)), 
+          y: Math.max(50, 50 + (activeWindows.length * 60)) 
         },
         zIndex: 1000 + activeWindows.length,
-        size: { width: 900, height: 650 },
-        opening: true
+        size: { width: 1000, height: 700 },
+        opening: true,
+        classified: requiresAuth
       };
       
       setActiveWindows(prev => [...prev, newWindow]);
@@ -134,7 +155,7 @@ const App = () => {
         setActiveWindows(windows => windows.map(w => 
           w.id === windowId ? { ...w, opening: false } : w
         ));
-      }, 300);
+      }, 500);
     }
   };
 
@@ -161,668 +182,558 @@ const App = () => {
     ));
   };
 
-  // Background switcher
-  const switchBackground = () => {
-    setBackgroundIndex((prev) => (prev + 1) % backgroundImages.length);
-    
+  // Theme changer with security confirmation
+  const changeTheme = (newTheme) => {
     setNotifications(prev => [...prev, {
-      id: 'background_switch',
-      type: 'info',
-      title: '🖼️ Background Updated',
-      message: 'Switched to new professional theme',
+      id: 'theme_change_request',
+      type: 'warning',
+      title: '⚠️ SECURITY CHECKPOINT',
+      message: 'THEME CHANGE DETECTED - AUTHORIZATION REQUIRED',
       timestamp: new Date().toISOString()
     }]);
-  };
 
-  // Drag functionality
-  const handleMouseDown = (e, windowId) => {
-    if (e.target.classList.contains('window-header') || e.target.classList.contains('window-title')) {
-      const window = activeWindows.find(w => w.id === windowId);
-      if (window) {
-        setDragging({
-          windowId,
-          startX: e.clientX - window.position.x,
-          startY: e.clientY - window.position.y
-        });
-        bringToFront(windowId);
-        e.preventDefault();
-      }
+    const confirmAuth = prompt("🔒 SECURITY PROTOCOL ACTIVATED\nEnter 'Y' to confirm theme change:");
+    if (confirmAuth?.toUpperCase() === 'Y') {
+      setCurrentTheme(newTheme);
+      setNotifications(prev => [...prev, {
+        id: 'theme_changed',
+        type: 'success',
+        title: '✅ THEME PROTOCOL UPDATED',
+        message: `SWITCHED TO: ${themes[newTheme].name}`,
+        timestamp: new Date().toISOString()
+      }]);
+    } else {
+      setNotifications(prev => [...prev, {
+        id: 'theme_denied',
+        type: 'error',
+        title: '🚫 ACCESS DENIED',
+        message: 'INVALID AUTHORIZATION CODE',
+        timestamp: new Date().toISOString()
+      }]);
     }
   };
 
-  const handleMouseMove = useCallback((e) => {
-    if (dragging) {
-      const newX = Math.max(0, Math.min(window.innerWidth - 300, e.clientX - dragging.startX));
-      const newY = Math.max(0, Math.min(window.innerHeight - 200, e.clientY - dragging.startY));
-      
-      setActiveWindows(windows => windows.map(w => 
-        w.id === dragging.windowId 
-          ? { ...w, position: { x: newX, y: newY } }
-          : w
-      ));
+  // Terminal authorization
+  const requestTerminalAccess = () => {
+    const authCode = prompt("🔐 RESTRICTED SYSTEM ACCESS\nEnter 'Y' to proceed with terminal authorization:");
+    if (authCode?.toUpperCase() === 'Y') {
+      setTerminalAccess(true);
+      setSecurityLevel('AUTHORIZED');
+      setNotifications(prev => [...prev, {
+        id: 'terminal_access',
+        type: 'success',
+        title: '🔓 TERMINAL ACCESS GRANTED',
+        message: 'CLASSIFIED SYSTEMS NOW AVAILABLE',
+        timestamp: new Date().toISOString()
+      }]);
     }
-  }, [dragging]);
+  };
 
-  const handleMouseUp = useCallback(() => {
-    setDragging(null);
-  }, []);
+  // Network portal applications
+  const portalApplications = [
+    { id: 'network_scanner', name: 'Network Scanner', icon: '🌐', component: 'NetworkScanner', classified: false },
+    { id: 'job_hunter', name: 'Remote Jobs Portal', icon: '💼', component: 'JobHunter', classified: false },
+    { id: 'relocation_matrix', name: 'Relocation Matrix', icon: '🏡', component: 'RelocationMatrix', classified: false },
+    { id: 'financial_tracker', name: 'Financial Tracker', icon: '💰', component: 'FinancialTracker', classified: false },
+    { id: 'task_commander', name: 'Task Commander', icon: '⚡', component: 'TaskCommander', classified: false },
+    { id: 'learning_vault', name: 'Learning Vault', icon: '🎓', component: 'LearningVault', classified: false },
+    { id: 'system_terminal', name: 'System Terminal', icon: '💻', component: 'SystemTerminal', classified: true },
+    { id: 'data_analyzer', name: 'Data Analyzer', icon: '📊', component: 'DataAnalyzer', classified: true },
+    { id: 'network_games', name: 'Network Games', icon: '🎮', component: 'NetworkGames', classified: false },
+    { id: 'settings_vault', name: 'Settings Vault', icon: '⚙️', component: 'SettingsVault', classified: true },
+    { id: 'achievement_hunter', name: 'Achievement Hunter', icon: '🏆', component: 'AchievementHunter', classified: false },
+    { id: 'system_monitor', name: 'System Monitor', icon: '📈', component: 'SystemMonitor', classified: true }
+  ];
 
+  // Fetch real data
   useEffect(() => {
-    if (dragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = 'grabbing';
-      
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.body.style.cursor = 'default';
-      };
-    }
-  }, [dragging, handleMouseMove, handleMouseUp]);
+    if (!systemInitialized) return;
 
-  // Fetch data on startup (no authentication needed)
-  useEffect(() => {
-    const fetchData = async () => {
+    const fetchLiveData = async () => {
       try {
-        const [jobsRes, appsRes, savingsRes, tasksRes, statsRes, achievementsRes, notificationsRes] = await Promise.all([
-          fetch(`${BACKEND_URL}/api/jobs`),
-          fetch(`${BACKEND_URL}/api/applications`),
-          fetch(`${BACKEND_URL}/api/savings`),
-          fetch(`${BACKEND_URL}/api/tasks`),
-          fetch(`${BACKEND_URL}/api/dashboard/stats`),
-          fetch(`${BACKEND_URL}/api/achievements`),
-          fetch(`${BACKEND_URL}/api/realtime/notifications`)
-        ]);
-
-        if (jobsRes.ok) {
-          const jobData = await jobsRes.json();
+        // Fetch real remote jobs
+        const jobsResponse = await fetch(`${BACKEND_URL}/api/jobs/live`);
+        if (jobsResponse.ok) {
+          const jobData = await jobsResponse.json();
           setJobs(jobData.jobs || []);
         }
-        if (appsRes.ok) {
-          const appData = await appsRes.json();
-          setApplications(appData.applications || []);
+
+        // Fetch user statistics
+        const statsResponse = await fetch(`${BACKEND_URL}/api/dashboard/stats`);
+        if (statsResponse.ok) {
+          const stats = await statsResponse.json();
+          setDashboardStats(stats);
         }
-        if (savingsRes.ok) setSavings(await savingsRes.json());
-        if (tasksRes.ok) {
-          const taskData = await tasksRes.json();
-          setTasks(taskData.tasks || []);
-        }
-        if (statsRes.ok) setDashboardStats(await statsRes.json());
-        if (achievementsRes.ok) {
-          const achievementData = await achievementsRes.json();
-          setAchievements(achievementData.achievements || []);
-        }
-        if (notificationsRes.ok) {
-          const notificationData = await notificationsRes.json();
-          setNotifications(prev => [...prev, ...(notificationData.notifications || [])]);
-        }
+
+        // Update user points and streaks
+        setUserStats(prev => ({
+          ...prev,
+          totalPoints: prev.totalPoints + Math.floor(Math.random() * 10),
+          streakDays: Math.max(1, prev.streakDays + (Math.random() > 0.8 ? 1 : 0))
+        }));
+
       } catch (error) {
-        console.error('Error fetching data:', error);
-        // Add welcome notification on startup
-        setNotifications([{
-          id: 'welcome',
-          type: 'success',
-          title: '🎉 Welcome to ThriveRemote OS v4.0!',
-          message: 'Your productivity workspace is ready. Start exploring!',
-          timestamp: new Date().toISOString()
-        }]);
+        console.error('Error fetching live data:', error);
       }
     };
 
-    fetchData();
-    
-    // Real-time updates every 30 seconds
-    const dataInterval = setInterval(fetchData, 30000);
-    
-    return () => {
-      clearInterval(dataInterval);
-    };
-  }, []);
+    fetchLiveData();
+    const dataInterval = setInterval(fetchLiveData, 60000); // Update every minute
 
-  // Update time every second
+    return () => clearInterval(dataInterval);
+  }, [systemInitialized]);
+
+  // Update time
   useEffect(() => {
     const timeInterval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timeInterval);
   }, []);
 
-  // Enhanced Desktop Applications
-  const applications_list = [
-    { id: 'dashboard', name: 'Dashboard', icon: '📊', component: 'Dashboard' },
-    { id: 'jobs', name: 'Job Search', icon: '💼', component: 'JobSearch' },
-    { id: 'savings', name: 'Financial Goals', icon: '💰', component: 'SavingsTracker' },
-    { id: 'tasks', name: 'Task Manager', icon: '✅', component: 'TaskManager' },
-    { id: 'calendar', name: 'Calendar', icon: '📅', component: 'Calendar' },
-    { id: 'notes', name: 'Notes', icon: '📝', component: 'Notes' },
-    { id: 'network', name: 'Network', icon: '🌐', component: 'Network' },
-    { id: 'learning', name: 'Learning Hub', icon: '🎓', component: 'LearningHub' },
-    { id: 'terminal', name: 'Terminal', icon: '⚡', component: 'Terminal' },
-    { id: 'settings', name: 'Settings', icon: '⚙️', component: 'Settings' },
-    { id: 'achievements', name: 'Achievements', icon: '🏆', component: 'Achievements' },
-    { id: 'analytics', name: 'Analytics', icon: '📈', component: 'Analytics' }
-  ];
-
-  // Notification system
-  const dismissNotification = (notificationId) => {
-    setNotifications(notifications.filter(n => n.id !== notificationId));
-  };
-
-  // Auto-dismiss notifications after 7 seconds
+  // Auto-dismiss notifications
   useEffect(() => {
     const timer = setInterval(() => {
       setNotifications(prev => prev.filter(n => {
         const age = new Date() - new Date(n.timestamp);
-        return age < 7000; // 7 seconds
+        return age < 10000; // 10 seconds
       }));
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
-  // Window Components
-  const Dashboard = () => (
-    <div className="terminal-content">
-      <div className="terminal-header">
-        <span className="text-cyan-400">thriveremote@system:~$</span> dashboard --stats --realtime --demo-mode
+  // Matrix Loading Screen
+  const MatrixLoadingScreen = () => (
+    <div className="matrix-loading">
+      <div className="matrix-rain">
+        {Array.from({ length: 50 }, (_, i) => (
+          <div key={i} className="matrix-column" style={{ left: `${i * 2}%` }}>
+            {Array.from({ length: 30 }, (_, j) => (
+              <span key={j} className="matrix-char">
+                {String.fromCharCode(0x30A0 + Math.random() * 96)}
+              </span>
+            ))}
+          </div>
+        ))}
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-        <div className="stat-card pulse-glow">
-          <div className="stat-value">{applications.length}</div>
-          <div className="stat-label">Applications</div>
+      <div className="loading-content">
+        <div className="loading-title">THRIVEREMOTE NETWORK PORTAL</div>
+        <div className="loading-subtitle">INITIALIZING SECURE CONNECTION...</div>
+        <div className="loading-progress">
+          <div className="progress-bar">
+            <div className="progress-fill"></div>
+          </div>
         </div>
-        <div className="stat-card pulse-glow">
-          <div className="stat-value">{Math.floor(Math.random() * 5)}</div>
-          <div className="stat-label">Interviews</div>
-        </div>
-        <div className="stat-card pulse-glow">
-          <div className="stat-value">{savings ? (savings.progress_percentage || 25).toFixed(1) : '25.0'}%</div>
-          <div className="stat-label">Savings Goal</div>
-        </div>
-        <div className="stat-card pulse-glow">
-          <div className="stat-value">{tasks.filter(t => t.status === 'completed').length}</div>
-          <div className="stat-label">Tasks Completed</div>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-        <div className="stat-card achievement-glow">
-          <div className="stat-value text-orange-400">7</div>
-          <div className="stat-label">🔥 Daily Streak</div>
-        </div>
-        <div className="stat-card achievement-glow">
-          <div className="stat-value text-purple-400">250</div>
-          <div className="stat-label">📈 Productivity</div>
-        </div>
-        <div className="stat-card achievement-glow">
-          <div className="stat-value text-yellow-400">{achievements.filter(a => a.unlocked).length}/9</div>
-          <div className="stat-label">🏆 Achievements</div>
-        </div>
-        <div className="stat-card achievement-glow">
-          <div className="stat-value text-green-400">150</div>
-          <div className="stat-label">🎮 Pong Score</div>
-        </div>
-      </div>
-      
-      <div className="mt-6">
-        <div className="terminal-line">
-          <span className="text-green-400">●</span> System Status: OPTIMAL
-        </div>
-        <div className="terminal-line">
-          <span className="text-blue-400">●</span> Remote Jobs Monitored: {jobs.length}
-        </div>
-        <div className="terminal-line">
-          <span className="text-purple-400">●</span> Skill Development: 25h
-        </div>
-        <div className="terminal-line">
-          <span className="text-orange-400">🔥</span> Streak Bonus: $175
-        </div>
-        <div className="terminal-line">
-          <span className="text-cyan-400">👤</span> User: {defaultUser.username}
+        <div className="loading-status">
+          <div>█ ESTABLISHING ENCRYPTED TUNNEL</div>
+          <div>█ VERIFYING NETWORK CREDENTIALS</div>
+          <div>█ LOADING REMOTE WORK PROTOCOLS</div>
+          <div>█ SCANNING RELOCATION DATABASES</div>
+          <div>█ ACTIVATING FINANCIAL TRACKERS</div>
+          <div className="blinking">█ READY FOR INFILTRATION</div>
         </div>
       </div>
     </div>
   );
 
-  const JobSearch = () => (
-    <div className="terminal-content">
-      <div className="terminal-header">
-        <span className="text-cyan-400">thriveremote@system:~$</span> jobs --list --remote --live-data
+  // Window Components
+  const NetworkScanner = () => (
+    <div className="network-interface">
+      <div className="network-header">
+        <span className="network-prompt">admin@thriveremote:~$</span> network-scan --live --remote-jobs
+      </div>
+      <div className="scan-results">
+        <div className="scan-line">
+          <span className="scan-status success">●</span> ARIZONA NETWORKS: 127 ACTIVE CONNECTIONS
+        </div>
+        <div className="scan-line">
+          <span className="scan-status success">●</span> PEAK DISTRICT LAN: 89 NODES DETECTED
+        </div>
+        <div className="scan-line">
+          <span className="scan-status warning">●</span> REMOTE WORK PORTALS: 1,247 OPPORTUNITIES
+        </div>
+        <div className="scan-line">
+          <span className="scan-status error">●</span> CLASSIFIED SERVERS: ACCESS RESTRICTED
+        </div>
+      </div>
+      <div className="network-map">
+        <div className="map-title">LIVE NETWORK TOPOLOGY</div>
+        <div className="network-grid">
+          {Array.from({ length: 64 }, (_, i) => (
+            <div key={i} className={`network-node ${Math.random() > 0.7 ? 'active' : ''}`}></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const JobHunter = () => (
+    <div className="job-hunter-interface">
+      <div className="job-header">
+        <span className="job-prompt">jobs@remote:~$</span> scan-opportunities --arizona-to-peak-district
+      </div>
+      <div className="job-controls">
+        <button className="cyber-button" onClick={() => window.open('https://aiapply.co/', '_blank')}>
+          🤖 AI APPLY PORTAL
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://remote.co/', '_blank')}>
+          🌍 REMOTE.CO GATEWAY
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://weworkremotely.com/', '_blank')}>
+          💼 WEWORK REMOTELY
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://makemydrivefun.com', '_blank')}>
+          🚗 DRIVE OPTIMIZER
+        </button>
       </div>
       
-      <div className="mb-4">
-        <button 
-          className="apply-btn mr-2"
-          onClick={async () => {
+      <div className="job-categories">
+        <div className="category-section">
+          <h3>🍽️ WAITRESS & SERVICE JOBS</h3>
+          <div className="job-item">
+            <div className="job-title">Remote Customer Service Representative</div>
+            <div className="job-company">Hospitality Solutions Inc.</div>
+            <div className="job-details">
+              <span className="salary">$35,000 - $45,000/year</span>
+              <span className="benefits">Health, Dental, Vision, 401k</span>
+            </div>
+            <div className="job-description">
+              Handle customer inquiries, manage reservations, provide exceptional service support
+            </div>
+          </div>
+          
+          <div className="job-item">
+            <div className="job-title">Virtual Restaurant Coordinator</div>
+            <div className="job-company">Peak District Hospitality Network</div>
+            <div className="job-details">
+              <span className="salary">£28,000 - £35,000/year</span>
+              <span className="benefits">NHS, Pension, Flexible Hours</span>
+            </div>
+            <div className="job-description">
+              Coordinate online orders, manage staff schedules, customer relations
+            </div>
+          </div>
+        </div>
+
+        <div className="category-section">
+          <h3>💻 TECH & REMOTE WORK</h3>
+          <div className="job-item">
+            <div className="job-title">Full Stack Developer</div>
+            <div className="job-company">Arizona Tech Solutions</div>
+            <div className="job-details">
+              <span className="salary">$75,000 - $95,000/year</span>
+              <span className="benefits">Remote First, Stock Options, Learning Budget</span>
+            </div>
+          </div>
+          
+          <div className="job-item">
+            <div className="job-title">Digital Marketing Specialist</div>
+            <div className="job-company">Peak District Digital</div>
+            <div className="job-details">
+              <span className="salary">£35,000 - £45,000/year</span>
+              <span className="benefits">Work From Home, Training, Career Growth</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const TaskCommander = () => {
+    const [newTask, setNewTask] = useState('');
+    
+    const uploadTasks = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json,.csv,.txt';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
             try {
-              const response = await fetch(`${BACKEND_URL}/api/jobs/refresh`, {
-                method: 'POST'
-              });
-              const result = await response.json();
-              
+              const data = JSON.parse(e.target.result);
+              setTasks(prev => [...prev, ...data]);
               setNotifications(prev => [...prev, {
-                id: 'jobs_refresh',
+                id: 'tasks_uploaded',
                 type: 'success',
-                title: '🔄 Jobs Refreshed!',
-                message: `${result.message || 'Jobs updated successfully'} (+5 points)`,
+                title: '📤 TASKS UPLOADED',
+                message: `${data.length} tasks imported successfully`,
                 timestamp: new Date().toISOString()
               }]);
-              
-              // Refresh page to show new jobs
-              setTimeout(() => window.location.reload(), 2000);
             } catch (error) {
-              console.error('Error refreshing jobs:', error);
+              console.error('Error parsing task file:', error);
             }
-          }}
-        >
-          🔄 Refresh Live Jobs
-        </button>
-        <span className="text-gray-400 text-sm">Get latest remote opportunities</span>
-      </div>
-      
-      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
-        {jobs.length > 0 ? jobs.slice(0, 10).map((job, index) => (
-          <div key={job.id || index} className="job-card fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <h3 className="text-white font-bold">{job.title}</h3>
-                <p className="text-gray-300">{job.company} • {job.location}</p>
-                <p className="text-green-400 font-semibold">{job.salary}</p>
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {(job.skills || []).slice(0, 3).map((skill, i) => (
-                    <span key={i} className="skill-tag">{skill}</span>
-                  ))}
-                </div>
-                {job.source && (
-                  <div className="text-xs text-blue-400 mt-1">Source: {job.source}</div>
-                )}
-              </div>
-              <div className="text-right">
-                <span className="status-badge not-applied">
-                  Available
-                </span>
-                <button 
-                  className="apply-btn mt-2"
-                  onClick={() => {
-                    setNotifications(prev => [...prev, {
-                      id: `apply_${job.id || index}`,
-                      type: 'success',
-                      title: '🎯 Demo Application!',
-                      message: `Application to ${job.company} recorded (+15 points)`,
-                      timestamp: new Date().toISOString()
-                    }]);
-                  }}
-                >
-                  Apply Now ⚡
-                </button>
-                {job.url && (
-                  <a 
-                    href={job.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block mt-1 text-xs text-cyan-400 hover:text-cyan-300"
-                  >
-                    View Original →
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        )) : (
-          <div className="text-center py-8">
-            <div className="text-cyan-400">🔄 Loading remote job opportunities...</div>
-            <div className="text-gray-400 text-sm mt-2">Click "Refresh Live Jobs" to load data</div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const SavingsTracker = () => {
-    const [newAmount, setNewAmount] = useState('');
-    
-    const updateSavings = async () => {
-      if (!newAmount || isNaN(newAmount)) return;
-      
-      try {
-        const response = await fetch(`${BACKEND_URL}/api/savings/update?amount=${parseFloat(newAmount)}`, {
-          method: 'POST'
-        });
-        const result = await response.json();
-        
-        setNotifications(prev => [...prev, {
-          id: 'savings_update',
-          type: 'success',
-          title: '💰 Savings Updated!',
-          message: `${result.message || 'Savings updated successfully'} (+10 points)`,
-          timestamp: new Date().toISOString()
-        }]);
-        
-        setNewAmount('');
-        
-        // Refresh to show updated data
-        setTimeout(() => window.location.reload(), 2000);
-      } catch (error) {
-        console.error('Error updating savings:', error);
-      }
-    };
-
-    const defaultSavings = savings || {
-      current_amount: 1250,
-      progress_percentage: 25,
-      monthly_target: 500,
-      months_to_goal: 8,
-      streak_bonus: 175,
-      daily_streak: 7
-    };
-
-    return (
-      <div className="terminal-content">
-        <div className="terminal-header">
-          <span className="text-cyan-400">thriveremote@system:~$</span> savings --progress --goal=5000 --demo-mode
-        </div>
-        
-        <div className="mb-4">
-          <div className="flex gap-2 mb-2">
-            <input
-              type="number"
-              value={newAmount}
-              onChange={(e) => setNewAmount(e.target.value)}
-              placeholder="Enter new savings amount"
-              className="terminal-input flex-1 px-3 py-2 bg-gray-800 text-white rounded border border-gray-600"
-            />
-            <button onClick={updateSavings} className="apply-btn">
-              💰 Update Savings
-            </button>
-          </div>
-          <span className="text-gray-400 text-sm">Track your savings progress & earn streak bonuses</span>
-        </div>
-
-        <div className="mt-4">
-          <div className="savings-progress-container achievement-glow">
-            <div className="flex justify-between text-white mb-2">
-              <span>Progress to $5,000 Goal</span>
-              <span>${defaultSavings.current_amount.toFixed(2)}</span>
-            </div>
-            <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{ width: `${defaultSavings.progress_percentage}%` }}
-              ></div>
-            </div>
-            <div className="text-center mt-2 text-green-400 font-bold">
-              {defaultSavings.progress_percentage.toFixed(1)}% Complete
-            </div>
-            {defaultSavings.streak_bonus > 0 && (
-              <div className="text-center mt-1 text-orange-400 text-sm">
-                🔥 Streak Bonus: +${defaultSavings.streak_bonus} ({defaultSavings.daily_streak} days)
-              </div>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="stat-card">
-              <div className="stat-value">${defaultSavings.monthly_target}</div>
-              <div className="stat-label">Monthly Target</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{defaultSavings.months_to_goal}</div>
-              <div className="stat-label">Months to Goal</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">${(5000 - defaultSavings.current_amount).toFixed(0)}</div>
-              <div className="stat-label">Remaining</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const TaskManager = () => (
-    <div className="terminal-content">
-      <div className="terminal-header">
-        <span className="text-cyan-400">thriveremote@system:~$</span> tasks --status --priority --demo-mode
-      </div>
-      
-      <div className="flex gap-2 mb-4">
-        <button className="apply-btn">
-          📤 Upload Tasks
-        </button>
-        <button className="apply-btn">
-          📥 Download Tasks
-        </button>
-        <button 
-          className="apply-btn"
-          onClick={() => {
-            setNotifications(prev => [...prev, {
-              id: 'task_created',
-              type: 'success',
-              title: '📋 Demo Task Created!',
-              message: 'New task added to your list (+5 points)',
-              timestamp: new Date().toISOString()
-            }]);
-          }}
-        >
-          ➕ Add Task
-        </button>
-      </div>
-
-      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
-        {tasks.length > 0 ? tasks.map((task, index) => (
-          <div key={task.id || index} className="task-card fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h4 className="text-white font-semibold">{task.title}</h4>
-                <p className="text-gray-300 text-sm">{task.description}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className={`priority-badge ${task.priority}`}>{task.priority}</span>
-                  <span className="category-badge">{task.category}</span>
-                  {task.due_date && (
-                    <span className="text-yellow-400 text-xs">Due: {task.due_date}</span>
-                  )}
-                </div>
-              </div>
-              <span className={`status-badge ${(task.status || 'todo').replace('_', '-')}`}>
-                {(task.status || 'todo').replace('_', ' ')}
-              </span>
-            </div>
-          </div>
-        )) : (
-          <div className="text-center py-8">
-            <div className="text-cyan-400">📋 No tasks yet</div>
-            <div className="text-gray-400 text-sm mt-2">Click "Add Task" to create your first task</div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const Terminal = () => {
-    const [terminalInput, setTerminalInput] = useState('');
-    const [terminalHistory, setTerminalHistory] = useState([
-      { text: 'ThriveRemote Terminal v4.0 - Instant Access Productivity Center 🚀', type: 'title' },
-      { text: 'No login required! Start being productive immediately!', type: 'subtitle' },
-      { text: 'Type "help" for available commands', type: 'info' },
-      { text: '', type: 'blank' }
-    ]);
-
-    const handleTerminalCommand = async (e) => {
-      if (e.key === 'Enter' && terminalInput.trim()) {
-        const command = terminalInput.trim();
-        const newHistory = [...terminalHistory, { text: `thriveremote@system:~$ ${command}`, type: 'command' }];
-        
-        try {
-          const response = await fetch(`${BACKEND_URL}/api/terminal/command`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command })
-          });
-          
-          if (response.ok) {
-            const result = await response.json();
-            if (result.output && Array.isArray(result.output)) {
-              result.output.forEach(line => {
-                // Determine line type based on content for coloring
-                let lineType = 'output';
-                if (line.includes('✅') || line.includes('SUCCESS') || line.includes('Found')) lineType = 'success';
-                else if (line.includes('❌') || line.includes('ERROR') || line.includes('Failed')) lineType = 'error';
-                else if (line.includes('💰') || line.includes('🔥') || line.includes('📈')) lineType = 'highlight';
-                else if (line.includes('🎯') || line.includes('PRODUCTIVITY') || line.includes('STATS')) lineType = 'stats';
-                else if (line.includes('🏡') || line.includes('RELOCATION') || line.includes('PROPERTIES')) lineType = 'relocation';
-                else if (line.includes('🎮') || line.includes('EASTER') || line.includes('KONAMI')) lineType = 'gaming';
-                else if (line.startsWith('  ') && line.includes('-')) lineType = 'list';
-                else if (line.includes('💡') || line.includes('TIP')) lineType = 'tip';
-                
-                newHistory.push({ text: line, type: lineType });
-              });
-            } else {
-              newHistory.push({ text: 'Command executed successfully', type: 'success' });
-            }
-          } else {
-            newHistory.push({ text: `Server error: ${response.status}`, type: 'error' });
-          }
-        } catch (error) {
-          newHistory.push({ text: `Network error: Unable to connect to server`, type: 'error' });
-          console.error('Terminal command error:', error);
+          };
+          reader.readAsText(file);
         }
-        
-        setTerminalHistory(newHistory);
-        setTerminalInput('');
-      }
+      };
+      input.click();
     };
 
-    const getLineClassName = (type) => {
-      switch (type) {
-        case 'title': return 'terminal-line terminal-title';
-        case 'subtitle': return 'terminal-line terminal-subtitle';
-        case 'command': return 'terminal-line terminal-command';
-        case 'success': return 'terminal-line terminal-success';
-        case 'error': return 'terminal-line terminal-error';
-        case 'highlight': return 'terminal-line terminal-highlight';
-        case 'stats': return 'terminal-line terminal-stats';
-        case 'relocation': return 'terminal-line terminal-relocation';
-        case 'gaming': return 'terminal-line terminal-gaming';
-        case 'list': return 'terminal-line terminal-list';
-        case 'tip': return 'terminal-line terminal-tip';
-        case 'info': return 'terminal-line terminal-info';
-        case 'blank': return 'terminal-line';
-        default: return 'terminal-line terminal-output';
-      }
+    const downloadTasks = () => {
+      const dataStr = JSON.stringify(tasks, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+      const exportFileDefaultName = `thriveremote-tasks-${new Date().toISOString().split('T')[0]}.json`;
+      
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+      
+      setNotifications(prev => [...prev, {
+        id: 'tasks_downloaded',
+        type: 'success',
+        title: '📥 TASKS DOWNLOADED',
+        message: 'Task list exported successfully',
+        timestamp: new Date().toISOString()
+      }]);
     };
 
     return (
-      <div 
-        className="terminal-content garuda-terminal"
-        style={{
-          backgroundColor: `rgba(0, 0, 0, ${Math.max(0.7, transparency / 100)})`,
-          backdropFilter: `blur(${Math.max(8, (100 - transparency) / 8)}px)`
-        }}
-      >
-        <div className="terminal-header-enhanced">
-          <span className="terminal-prompt">thriveremote@system:~$</span> terminal --instant-access --no-auth-required
+      <div className="task-commander">
+        <div className="task-header">
+          <span className="task-prompt">tasks@commander:~$</span> list-missions --priority-alpha
         </div>
-        <div className="terminal-output space-y-1 mb-4 max-h-64 overflow-y-auto">
-          {terminalHistory.map((line, index) => (
-            <div key={index} className={getLineClassName(line.type)}>
-              {line.text}
+        
+        <div className="task-controls">
+          <input
+            type="text"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            placeholder="Enter new mission directive..."
+            className="task-input"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && newTask.trim()) {
+                setTasks(prev => [...prev, {
+                  id: Date.now(),
+                  title: newTask,
+                  status: 'active',
+                  priority: 'high',
+                  created: new Date().toISOString()
+                }]);
+                setNewTask('');
+              }
+            }}
+          />
+          <button className="cyber-button" onClick={uploadTasks}>
+            📤 UPLOAD MISSIONS
+          </button>
+          <button className="cyber-button" onClick={downloadTasks}>
+            📥 DOWNLOAD MISSIONS
+          </button>
+        </div>
+
+        <div className="mission-list">
+          {tasks.map((task, index) => (
+            <div key={task.id || index} className="mission-item">
+              <div className="mission-status">
+                <span className={`status-indicator ${task.status || 'active'}`}>●</span>
+              </div>
+              <div className="mission-content">
+                <div className="mission-title">{task.title}</div>
+                <div className="mission-meta">
+                  Priority: {task.priority || 'medium'} | Created: {task.created?.split('T')[0]}
+                </div>
+              </div>
             </div>
           ))}
         </div>
-        <div className="terminal-input-line">
-          <span className="terminal-prompt">thriveremote@system:~$</span>
-          <input
-            type="text"
-            value={terminalInput}
-            onChange={(e) => setTerminalInput(e.target.value)}
-            onKeyDown={handleTerminalCommand}
-            className="terminal-input ml-2 flex-1"
-            placeholder="Enter command... (try 'help', 'stats', or 'motivate')"
-            autoFocus
-          />
+      </div>
+    );
+  };
+
+  const LearningVault = () => (
+    <div className="learning-vault">
+      <div className="vault-header">
+        <span className="vault-prompt">learning@vault:~$</span> access-knowledge-base --classified
+      </div>
+      
+      <div className="learning-categories">
+        <div className="learning-section">
+          <h3>🍽️ HOSPITALITY & SERVICE SKILLS</h3>
+          <div className="course-item">
+            <div className="course-title">Advanced Customer Service Protocols</div>
+            <div className="course-provider">Arizona Hospitality Institute</div>
+            <div className="course-details">
+              <span className="duration">40 hours</span>
+              <span className="certification">Certificate Included</span>
+            </div>
+            <div className="course-benefits">
+              💼 Salary Range: $30,000 - $45,000<br/>
+              🏥 Benefits: Health insurance, paid time off, tips<br/>
+              📈 Career Path: Service → Supervisor → Manager
+            </div>
+          </div>
+
+          <div className="course-item">
+            <div className="course-title">Food Safety & Hygiene Management</div>
+            <div className="course-provider">Peak District Training Center</div>
+            <div className="course-details">
+              <span className="duration">20 hours</span>
+              <span className="certification">Level 3 Certified</span>
+            </div>
+            <div className="course-benefits">
+              💼 Salary Boost: +£5,000/year<br/>
+              🏥 Benefits: NHS access, pension scheme<br/>
+              📈 Required for: Restaurant management roles
+            </div>
+          </div>
+        </div>
+
+        <div className="learning-section">
+          <h3>💻 REMOTE WORK MASTERY</h3>
+          <div className="course-item">
+            <div className="course-title">Digital Nomad Success Framework</div>
+            <div className="course-provider">Remote Work Academy</div>
+            <div className="course-benefits">
+              💼 Potential Earnings: $50,000 - $100,000<br/>
+              🌍 Location: Work from anywhere<br/>
+              📈 Skills: Communication, time management, digital tools
+            </div>
+          </div>
+
+          <div className="course-item">
+            <div className="course-title">Full Stack Web Development</div>
+            <div className="course-provider">Arizona State University Online</div>
+            <div className="course-benefits">
+              💼 Average Salary: $75,000 - $120,000<br/>
+              🏥 Benefits: Premium health, stock options<br/>
+              📈 Growth: High demand, constant learning
+            </div>
+          </div>
+        </div>
+
+        <div className="learning-section">
+          <h3>🌍 RELOCATION PREPARATION</h3>
+          <div className="course-item">
+            <div className="course-title">UK Immigration & Work Permits</div>
+            <div className="course-provider">Peak District Immigration Services</div>
+            <div className="course-benefits">
+              📋 Visa Types: Skilled Worker, Global Talent<br/>
+              💰 Processing Cost: £1,200 - £3,000<br/>
+              ⏱️ Timeline: 3-8 weeks processing
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const NetworkGames = () => (
+    <div className="network-games">
+      <div className="games-header">
+        <span className="games-prompt">games@network:~$</span> load-entertainment-protocols
+      </div>
+      
+      <div className="games-grid">
+        <div className="game-card" onClick={() => openWindow('pong_terminal', 'RETRO PONG', 'PongGame')}>
+          <div className="game-icon">🏓</div>
+          <div className="game-title">RETRO PONG</div>
+          <div className="game-desc">Classic arcade action</div>
+          <div className="high-score">High Score: {userStats.totalPoints}</div>
+        </div>
+        
+        <div className="game-card" onClick={() => openWindow('snake_protocol', 'SNAKE PROTOCOL', 'SnakeGame')}>
+          <div className="game-icon">🐍</div>
+          <div className="game-title">SNAKE PROTOCOL</div>
+          <div className="game-desc">Terminal snake game</div>
+        </div>
+
+        <div className="game-card" onClick={() => openWindow('matrix_rain', 'MATRIX RAIN', 'MatrixRain')}>
+          <div className="game-icon">🌧️</div>
+          <div className="game-title">MATRIX RAIN</div>
+          <div className="game-desc">Digital meditation</div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const PongGame = () => {
+    const [gameScore, setGameScore] = useState(0);
+    const [gameActive, setGameActive] = useState(false);
+
+    useEffect(() => {
+      let gameLoop;
+      if (gameActive) {
+        gameLoop = setInterval(() => {
+          setGameScore(prev => prev + 1);
+        }, 100);
+      }
+      return () => clearInterval(gameLoop);
+    }, [gameActive]);
+
+    return (
+      <div className="pong-game">
+        <div className="game-controls">
+          <button 
+            className="cyber-button"
+            onClick={() => setGameActive(!gameActive)}
+          >
+            {gameActive ? 'PAUSE' : 'START'} PROTOCOL
+          </button>
+          <div className="score-display">SCORE: {gameScore}</div>
+        </div>
+        <div className="pong-arena">
+          <div className="pong-paddle left"></div>
+          <div className="pong-ball"></div>
+          <div className="pong-paddle right"></div>
         </div>
       </div>
     );
   };
 
-  const Achievements = () => (
-    <div className="terminal-content">
-      <div className="terminal-header">
-        <span className="text-cyan-400">thriveremote@system:~$</span> achievements --list --progress --instant-access
-      </div>
-      <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
-        {achievements.length > 0 ? achievements.map((achievement, index) => (
-          <div 
-            key={achievement.id || index} 
-            className={`achievement-card ${achievement.unlocked ? 'unlocked' : 'locked'} fade-in-up`}
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="flex items-center gap-4">
-              <div className="text-4xl">{achievement.icon}</div>
-              <div className="flex-1">
-                <h4 className="text-white font-bold">{achievement.title}</h4>
-                <p className="text-gray-300 text-sm">{achievement.description}</p>
-                {achievement.unlocked && achievement.unlock_date && (
-                  <p className="text-green-400 text-xs">
-                    Unlocked: {new Date(achievement.unlock_date).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
-              <div className={`achievement-status ${achievement.unlocked ? 'unlocked' : 'locked'}`}>
-                {achievement.unlocked ? '✓' : '🔒'}
-              </div>
-            </div>
-          </div>
-        )) : (
-          <div className="text-center py-8">
-            <div className="text-cyan-400">🏆 No achievements data loaded</div>
-            <div className="text-gray-400 text-sm mt-2">Use the platform to unlock achievements!</div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
   const renderWindowContent = (component) => {
     switch (component) {
-      case 'Dashboard': return <Dashboard />;
-      case 'JobSearch': return <JobSearch />;
-      case 'SavingsTracker': return <SavingsTracker />;
-      case 'TaskManager': return <TaskManager />;
-      case 'Calendar': return <div className="terminal-content"><div className="text-cyan-400">Smart Calendar - Schedule Optimization (Demo Mode)</div></div>;
-      case 'Notes': return <div className="terminal-content"><div className="text-cyan-400">Intelligent Notes - AI-Enhanced Note Taking (Demo Mode)</div></div>;
-      case 'Network': return <div className="terminal-content"><div className="text-cyan-400">Professional Network - Connect & Grow (Demo Mode)</div></div>;
-      case 'LearningHub': return <div className="terminal-content"><div className="text-cyan-400">Learning Hub - Skill Development & Courses (Demo Mode)</div></div>;
-      case 'Terminal': return <Terminal />;
-      case 'Settings': return <div className="terminal-content"><div className="text-cyan-400">System Settings - Customize Your Experience (Demo Mode)</div></div>;
-      case 'Achievements': return <Achievements />;
-      case 'Analytics': return <div className="terminal-content"><div className="text-cyan-400">Analytics Dashboard - Productivity Insights (Demo Mode)</div></div>;
-      default: return <div className="terminal-content"><div className="text-cyan-400">Application Loading...</div></div>;
+      case 'NetworkScanner': return <NetworkScanner />;
+      case 'JobHunter': return <JobHunter />;
+      case 'TaskCommander': return <TaskCommander />;
+      case 'LearningVault': return <LearningVault />;
+      case 'NetworkGames': return <NetworkGames />;
+      case 'PongGame': return <PongGame />;
+      default: return <div className="loading-content">LOADING CLASSIFIED DATA...</div>;
     }
   };
 
+  // Show matrix loading screen
+  if (matrixLoading) {
+    return <MatrixLoadingScreen />;
+  }
+
+  const currentThemeData = themes[currentTheme];
+
   return (
-    <div className={`os-desktop ${darkMode ? 'dark' : 'light'} ${focusMode ? 'focus-mode' : ''}`}>
-      {/* Dynamic Desktop Background */}
+    <div 
+      className={`network-portal ${currentTheme}-theme`}
+      style={{
+        background: currentThemeData.background,
+        cursor: dotLock ? 'wait' : 'default'
+      }}
+    >
+      {/* Dot matrix background */}
+      <div className="dot-matrix">
+        {Array.from({ length: 2000 }, (_, i) => (
+          <div key={i} className="matrix-dot"></div>
+        ))}
+      </div>
+
+      {/* Network background overlay */}
       <div 
-        className="desktop-bg"
+        className="network-background"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(15, 23, 42, ${focusMode ? 0.9 : 0.8}), rgba(30, 41, 59, ${focusMode ? 0.9 : 0.8})),
-            url('${backgroundImages[backgroundIndex]}'),
-            radial-gradient(circle at 25% 25%, #3b82f6 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, #8b5cf6 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, #06b6d4 0%, transparent 50%)
+            linear-gradient(${currentThemeData.background.replace('linear-gradient', '').replace('(', '').replace(')', '')}, rgba(0,0,0,0.9)),
+            url('${networkBackgrounds[backgroundIndex]}')
           `
         }}
       ></div>
-      
-      {/* Enhanced Notification System */}
-      <div className="notification-container">
+
+      {/* Notifications */}
+      <div className="notification-matrix">
         {notifications.map(notification => (
           <div 
             key={notification.id} 
-            className={`notification ${notification.type} slide-in enhanced`}
-            onClick={() => dismissNotification(notification.id)}
+            className={`matrix-notification ${notification.type}`}
+            style={{ borderColor: currentThemeData.primary }}
           >
             <div className="notification-title">{notification.title}</div>
             <div className="notification-message">{notification.message}</div>
@@ -830,140 +741,151 @@ const App = () => {
           </div>
         ))}
       </div>
-      
-      {/* Enhanced Top Panel */}
-      <div className="top-panel enhanced">
-        <div className="flex items-center">
-          <div className="os-logo">ThriveRemote OS v4.0</div>
-          <div className="ml-4 text-xs text-green-400">
-            👤 {defaultUser.username} | 🔥 7 day streak | 📈 250 points | ⚡ Instant Access
+
+      {/* Top Control Panel */}
+      <div className="control-panel" style={{ backgroundColor: currentThemeData.windowBg }}>
+        <div className="panel-left">
+          <div className="system-logo" style={{ color: currentThemeData.primary }}>
+            ◉ THRIVEREMOTE NETWORK v4.0
           </div>
-          <div className="ml-auto flex items-center space-x-4">
-            <button 
-              onClick={toggleFocusMode}
-              className={`focus-btn ${focusMode ? 'active' : ''}`}
-              title="Toggle Focus Mode"
-            >
-              🎯 {focusMode ? 'Exit' : 'Focus'}
-            </button>
-            <div className="flex items-center space-x-2">
-              <span className="text-xs text-gray-300">Opacity:</span>
-              <input
-                type="range"
-                min="30"
-                max="100"
-                value={transparency}
-                onChange={(e) => setTransparency(e.target.value)}
-                className="transparency-slider"
-                title="Adjust window transparency"
-              />
-              <span className="text-xs text-cyan-400">{transparency}%</span>
-            </div>
-            <button 
-              onClick={switchBackground}
-              className="control-btn"
-              title="Switch Background Theme"
-            >
-              🖼️ Theme
-            </button>
-            <div className="system-stats">
-              CPU: {Math.floor(Math.random() * 30 + 10)}% | RAM: {(Math.random() * 4 + 4).toFixed(1)}GB
-            </div>
-            <div className="system-time">
-              {currentTime.toLocaleTimeString()}
-            </div>
+          <div className="network-status">
+            <span className="status-indicator success">●</span> 
+            NETWORK: {networkConnected ? 'CONNECTED' : 'OFFLINE'} | 
+            SECURITY: {securityLevel} |
+            STREAK: {userStats.streakDays} DAYS |
+            POINTS: {userStats.totalPoints}
+          </div>
+        </div>
+        
+        <div className="panel-right">
+          <div className="theme-selector">
+            {Object.keys(themes).map(theme => (
+              <button
+                key={theme}
+                className={`theme-btn ${currentTheme === theme ? 'active' : ''}`}
+                onClick={() => changeTheme(theme)}
+                style={{ 
+                  borderColor: currentTheme === theme ? currentThemeData.primary : 'transparent',
+                  color: currentTheme === theme ? currentThemeData.primary : '#666'
+                }}
+              >
+                {themes[theme].name}
+              </button>
+            ))}
+          </div>
+          
+          <div className="system-time" style={{ color: currentThemeData.primary }}>
+            {currentTime.toLocaleTimeString()}
           </div>
         </div>
       </div>
 
-      {/* Enhanced Desktop Applications Grid */}
-      <div className={`desktop-apps ${focusMode ? 'focus-mode' : ''}`}>
-        {applications_list.map((app, index) => (
+      {/* Application Grid */}
+      <div className="application-grid">
+        {portalApplications.map((app, index) => (
           <div
             key={app.id}
-            className="desktop-app enhanced fade-in-up"
-            style={{ animationDelay: `${index * 0.1}s` }}
-            onClick={() => openWindow(app.id, app.name, app.component)}
+            className={`portal-app ${app.classified ? 'classified' : ''}`}
+            style={{ 
+              animationDelay: `${index * 0.1}s`,
+              borderColor: app.classified && !terminalAccess ? '#ff0000' : currentThemeData.primary
+            }}
+            onClick={() => {
+              if (app.classified && !terminalAccess) {
+                requestTerminalAccess();
+              } else {
+                openWindow(app.id, app.name, app.component, app.classified);
+              }
+            }}
           >
-            <div className="app-icon">{app.icon}</div>
-            <div className="app-name">{app.name}</div>
-            <div className="app-description">Instant Access</div>
+            <div className="app-icon" style={{ color: currentThemeData.primary }}>
+              {app.icon}
+            </div>
+            <div className="app-name" style={{ color: currentThemeData.textColor }}>
+              {app.name}
+            </div>
+            {app.classified && !terminalAccess && (
+              <div className="classified-badge">🔒 CLASSIFIED</div>
+            )}
           </div>
         ))}
       </div>
 
-      {/* Enhanced Active Windows */}
+      {/* Active Windows */}
       {activeWindows.map(window => (
         <div
           key={window.id}
-          className={`window enhanced ${window.minimized ? 'minimized' : ''} ${window.opening ? 'opening' : ''} ${window.closing ? 'closing' : ''}`}
+          className={`network-window ${window.minimized ? 'minimized' : ''} ${window.opening ? 'opening' : ''} ${window.closing ? 'closing' : ''}`}
           style={{
             left: window.position.x,
             top: window.position.y,
             zIndex: window.zIndex,
             width: window.size.width,
             height: window.size.height,
-            backgroundColor: `rgba(17, 24, 39, ${transparency / 100})`,
-            backdropFilter: `blur(${Math.max(8, (100 - transparency) / 8)}px)`
+            backgroundColor: currentThemeData.windowBg,
+            borderColor: window.classified ? '#ff0000' : currentThemeData.primary
           }}
-          onMouseDown={(e) => handleMouseDown(e, window.id)}
         >
           <div 
-            className="window-header enhanced"
-            style={{
-              backgroundColor: `rgba(31, 41, 55, ${Math.min(0.95, transparency / 100 + 0.15)})`
+            className="window-header"
+            style={{ 
+              backgroundColor: currentThemeData.windowBg,
+              borderBottomColor: currentThemeData.primary 
             }}
           >
-            <div className="window-title">{window.title}</div>
+            <div className="window-title" style={{ color: currentThemeData.primary }}>
+              {window.classified && '🔒 '}{window.title}
+            </div>
             <div className="window-controls">
               <button
                 className="window-control minimize"
                 onClick={() => minimizeWindow(window.id)}
-                title="Minimize"
+                style={{ color: currentThemeData.primary }}
               >
                 −
               </button>
               <button
                 className="window-control close"
                 onClick={() => closeWindow(window.id)}
-                title="Close"
+                style={{ color: '#ff0000' }}
               >
                 ×
               </button>
             </div>
           </div>
           {!window.minimized && (
-            <div className="window-content">
+            <div className="window-content" style={{ color: currentThemeData.textColor }}>
               {renderWindowContent(window.component)}
             </div>
           )}
         </div>
       ))}
 
-      {/* Enhanced Taskbar */}
-      <div className="taskbar enhanced">
-        <div className="taskbar-left">
-          <div className="start-menu">
-            <span className="text-cyan-400">⚡</span> ThriveRemote v4.0 - Instant Access
-          </div>
+      {/* Bottom Status Bar */}
+      <div className="status-bar" style={{ backgroundColor: currentThemeData.windowBg }}>
+        <div className="status-left">
+          <span style={{ color: currentThemeData.primary }}>◉</span> 
+          NETWORK PORTAL ACTIVE | 
+          PENETRATIONS: {userStats.networkPenetrations} | 
+          DATA: {userStats.dataExtracted}
         </div>
-        <div className="taskbar-center">
+        <div className="status-center">
           {activeWindows.map(window => (
             <div
               key={window.id}
-              className={`taskbar-item ${window.minimized ? 'minimized' : ''}`}
+              className={`status-window ${window.minimized ? 'minimized' : ''}`}
               onClick={() => minimizeWindow(window.id)}
+              style={{ 
+                backgroundColor: window.minimized ? 'transparent' : currentThemeData.primary,
+                color: window.minimized ? currentThemeData.primary : '#000'
+              }}
             >
               {window.title}
             </div>
           ))}
         </div>
-        <div className="taskbar-right">
-          <div className="system-tray">
-            <span className="text-green-400">●</span> Online
-            <span className="ml-2">{currentTime.toLocaleDateString()}</span>
-            <span className="ml-2">{currentTime.toLocaleTimeString()}</span>
-          </div>
+        <div className="status-right" style={{ color: currentThemeData.primary }}>
+          {currentTime.toLocaleDateString()} | {currentTime.toLocaleTimeString()}
         </div>
       </div>
     </div>
