@@ -323,50 +323,94 @@ body, html {
   }
 }
 
-/* Animation Classes */
-.fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+/* NETWORK WINDOWS */
+.network-window {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #00ff41;
+  border-radius: 8px;
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 500;
 }
 
-.slide-in {
-  animation: slideIn 0.3s ease-out forwards;
+.network-window.opening {
+  animation: window-open 0.5s ease-out;
 }
 
-.pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+.network-window.closing {
+  animation: window-close 0.3s ease-in;
 }
 
-.achievement-glow {
-  animation: achievement-glow 4s ease-in-out infinite;
+.network-window.minimized {
+  transform: scale(0.1);
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Notification System */
-.notification-container {
-  @apply fixed top-16 right-4 z-50 space-y-2;
+@keyframes window-open {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.notification {
-  @apply bg-gray-800 bg-opacity-95 backdrop-blur-md rounded-lg p-4 border-l-4 cursor-pointer transition-all duration-300 transform hover:scale-105 min-w-80 max-w-96;
+@keyframes window-close {
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
 }
 
-.notification.success {
-  @apply border-green-500 shadow-lg shadow-green-500/20;
+.window-header {
+  height: 40px;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid #00ff41;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: move;
 }
 
-.notification.achievement {
-  @apply border-yellow-500 shadow-lg shadow-yellow-500/20;
+.window-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
-.notification.info {
-  @apply border-blue-500 shadow-lg shadow-blue-500/20;
+.window-controls {
+  display: flex;
+  gap: 10px;
 }
 
-.notification-title {
-  @apply text-white font-bold text-sm mb-1;
+.window-control {
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  width: 25px;
+  height: 25px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s ease;
 }
 
-.notification-message {
-  @apply text-gray-300 text-xs;
+.window-control:hover {
+  background: currentColor;
+  color: #000;
+}
+
+.window-content {
+  padding: 20px;
+  height: calc(100% - 40px);
+  overflow-y: auto;
 }
 
 /* Top Panel Enhanced */
