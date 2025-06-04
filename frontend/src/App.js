@@ -384,6 +384,18 @@ const App = () => {
         <button className="cyber-button" onClick={() => window.open('https://makemydrivefun.com', '_blank')}>
           🚗 DRIVE OPTIMIZER
         </button>
+        <button className="cyber-button" onClick={() => window.open('https://remotive.io/', '_blank')}>
+          ⚡ REMOTIVE JOBS
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://angel.co/jobs', '_blank')}>
+          🚀 ANGELLIST STARTUP JOBS
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://nomadjobs.io/', '_blank')}>
+          🏔️ NOMAD JOBS
+        </button>
+        <button className="cyber-button" onClick={() => window.open('https://justremote.co/', '_blank')}>
+          🎯 JUST REMOTE
+        </button>
       </div>
       
       <div className="job-categories">
@@ -399,6 +411,11 @@ const App = () => {
             <div className="job-description">
               Handle customer inquiries, manage reservations, provide exceptional service support
             </div>
+            <div className="job-links">
+              <a href="https://aiapply.co/" target="_blank" rel="noopener noreferrer" className="job-link">Apply with AI</a>
+              <a href="https://indeed.com/jobs?q=remote+customer+service" target="_blank" rel="noopener noreferrer" className="job-link">View on Indeed</a>
+              <a href="https://glassdoor.com/Jobs/remote-customer-service-jobs-SRCH_KO0,23.htm" target="_blank" rel="noopener noreferrer" className="job-link">Glassdoor Reviews</a>
+            </div>
           </div>
           
           <div className="job-item">
@@ -410,6 +427,11 @@ const App = () => {
             </div>
             <div className="job-description">
               Coordinate online orders, manage staff schedules, customer relations
+            </div>
+            <div className="job-links">
+              <a href="https://uk.indeed.com/jobs?q=remote+hospitality" target="_blank" rel="noopener noreferrer" className="job-link">UK Indeed</a>
+              <a href="https://totaljobs.com/jobs/remote" target="_blank" rel="noopener noreferrer" className="job-link">Total Jobs</a>
+              <a href="https://reed.co.uk/jobs/remote" target="_blank" rel="noopener noreferrer" className="job-link">Reed.co.uk</a>
             </div>
           </div>
         </div>
@@ -423,6 +445,12 @@ const App = () => {
               <span className="salary">$75,000 - $95,000/year</span>
               <span className="benefits">Remote First, Stock Options, Learning Budget</span>
             </div>
+            <div className="job-links">
+              <a href="https://stackoverflow.com/jobs?r=true" target="_blank" rel="noopener noreferrer" className="job-link">Stack Overflow Jobs</a>
+              <a href="https://github.com/jobs" target="_blank" rel="noopener noreferrer" className="job-link">GitHub Jobs</a>
+              <a href="https://dice.com/jobs?q=remote%20developer" target="_blank" rel="noopener noreferrer" className="job-link">Dice Tech Jobs</a>
+              <a href="https://toptal.com/developers" target="_blank" rel="noopener noreferrer" className="job-link">Toptal Freelance</a>
+            </div>
           </div>
           
           <div className="job-item">
@@ -431,6 +459,30 @@ const App = () => {
             <div className="job-details">
               <span className="salary">£35,000 - £45,000/year</span>
               <span className="benefits">Work From Home, Training, Career Growth</span>
+            </div>
+            <div className="job-links">
+              <a href="https://marketingjobs.com/" target="_blank" rel="noopener noreferrer" className="job-link">Marketing Jobs</a>
+              <a href="https://hubspot.com/jobs" target="_blank" rel="noopener noreferrer" className="job-link">HubSpot Careers</a>
+              <a href="https://workable.com/jobs" target="_blank" rel="noopener noreferrer" className="job-link">Workable Jobs</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="category-section">
+          <h3>🌐 FREELANCE & GIG ECONOMY</h3>
+          <div className="job-item">
+            <div className="job-title">Freelance Opportunities</div>
+            <div className="job-company">Multiple Platforms</div>
+            <div className="job-details">
+              <span className="salary">$25 - $150/hour</span>
+              <span className="benefits">Flexible Schedule, Choose Projects</span>
+            </div>
+            <div className="job-links">
+              <a href="https://upwork.com/" target="_blank" rel="noopener noreferrer" className="job-link">Upwork</a>
+              <a href="https://fiverr.com/" target="_blank" rel="noopener noreferrer" className="job-link">Fiverr</a>
+              <a href="https://freelancer.com/" target="_blank" rel="noopener noreferrer" className="job-link">Freelancer.com</a>
+              <a href="https://guru.com/" target="_blank" rel="noopener noreferrer" className="job-link">Guru</a>
+              <a href="https://99designs.com/" target="_blank" rel="noopener noreferrer" className="job-link">99designs</a>
             </div>
           </div>
         </div>
