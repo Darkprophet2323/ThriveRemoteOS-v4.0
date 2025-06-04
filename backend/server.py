@@ -777,6 +777,72 @@ async def get_live_dashboard_stats():
     
     return network_stats
 
+@app.get("/api/network/scan")
+async def network_scan():
+    """Perform network scan simulation for hacker interface"""
+    
+    # Simulate network topology
+    network_nodes = []
+    for i in range(64):
+        node = {
+            "id": i,
+            "active": random.random() > 0.3,
+            "ip": f"192.168.{random.randint(1, 255)}.{random.randint(1, 255)}",
+            "type": random.choice(["workstation", "server", "router", "access_point"]),
+            "load": round(random.random() * 100, 1),
+            "security": random.choice(["secure", "monitoring", "alert"])
+        }
+        network_nodes.append(node)
+    
+    scan_results = {
+        "arizona_networks": {
+            "active_connections": 127 + int(time.time() % 50),
+            "total_bandwidth": "10.5 Gbps",
+            "security_status": "SECURE"
+        },
+        "peak_district_lan": {
+            "nodes_detected": 89 + int(time.time() % 30),
+            "fiber_connections": 45,
+            "security_status": "MONITORING"
+        },
+        "remote_work_portals": {
+            "opportunities": 1247 + jobs_collection.count_documents({}),
+            "verified_employers": 89,
+            "success_rate": "94.2%"
+        },
+        "classified_servers": {
+            "access_level": "RESTRICTED",
+            "requires_auth": True,
+            "threat_level": "GREEN" if time.time() % 3 > 1 else "YELLOW"
+        },
+        "topology": network_nodes
+    }
+    
+    return scan_results
+
+@app.post("/api/network/authenticate")
+async def network_authenticate(auth_data: dict):
+    """Handle network authentication requests"""
+    
+    auth_code = auth_data.get("code", "").upper()
+    
+    if auth_code == "Y":
+        return {
+            "access_granted": True,
+            "security_level": "AUTHORIZED",
+            "clearance": "CLASSIFIED",
+            "session_id": str(uuid.uuid4()),
+            "expires": (datetime.now() + timedelta(hours=8)).isoformat(),
+            "message": "TERMINAL ACCESS GRANTED - CLASSIFIED SYSTEMS AVAILABLE"
+        }
+    else:
+        return {
+            "access_granted": False,
+            "security_level": "DENIED", 
+            "message": "INVALID AUTHORIZATION CODE",
+            "retry_allowed": True
+        }
+
 @app.post("/api/jobs/refresh")
 async def refresh_jobs(session_token: str = None):
     """Manually refresh job listings (no auth required)"""
