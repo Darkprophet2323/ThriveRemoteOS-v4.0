@@ -1284,7 +1284,6 @@ async def execute_terminal_command(command: dict):
             "productivity_score": 2847,
             "commands_executed": 150
         }
-    user = await get_or_create_user(user_id)
     
     # Increment command counter
     users_collection.update_one(
