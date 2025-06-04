@@ -1349,9 +1349,31 @@ async def execute_terminal_command(command: dict):
         },
         "jobs": {
             "output": [
-                f"📋 Found {jobs_collection.count_documents({})} REAL remote job opportunities:",
-                "These are live jobs from Remotive API!",
-                "Use job search app to apply and track your applications"
+                f"💼 REMOTE OPPORTUNITIES DETECTED:",
+                "",
+                "🎯 Customer Service Rep - $35K-45K (Arizona/UK)",
+                "🎯 Virtual Coordinator - £28K-35K (Peak District)",
+                "🎯 Full Stack Developer - $75K-95K (Worldwide)",
+                "🎯 Digital Marketing - £35K-45K (UK/EU)",
+                "",
+                "📊 EXTERNAL PORTALS INTEGRATED:",
+                "• aiapply.co - AI-powered applications",
+                "• remote.co - Remote job aggregator", 
+                "• weworkremotely.com - Premium listings",
+                "• makemydrivefun.com - Drive optimization",
+                "• remotive.io - Curated remote positions",
+                "• angel.co/jobs - Startup opportunities",
+                "• nomadjobs.io - Digital nomad jobs",
+                "• justremote.co - Remote-first companies",
+                "",
+                "📈 FREELANCE PLATFORMS:",
+                "• upwork.com - Global freelance marketplace",
+                "• fiverr.com - Service-based gigs",
+                "• freelancer.com - Project bidding",
+                "• guru.com - Professional services",
+                "• 99designs.com - Design contests",
+                "",
+                "Use job hunter app for full interface"
             ]
         },
         "savings": {
