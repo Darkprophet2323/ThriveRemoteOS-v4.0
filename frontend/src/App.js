@@ -615,6 +615,12 @@ const App = () => {
               🏥 Benefits: Health insurance, paid time off, tips<br/>
               📈 Career Path: Service → Supervisor → Manager
             </div>
+            <div className="course-links">
+              <a href="https://coursera.org/courses?query=customer%20service" target="_blank" rel="noopener noreferrer" className="course-link">Coursera Courses</a>
+              <a href="https://udemy.com/courses/search/?q=customer+service" target="_blank" rel="noopener noreferrer" className="course-link">Udemy Training</a>
+              <a href="https://skillshare.com/browse/customer-service" target="_blank" rel="noopener noreferrer" className="course-link">Skillshare Classes</a>
+              <a href="https://linkedin.com/learning/topics/customer-service" target="_blank" rel="noopener noreferrer" className="course-link">LinkedIn Learning</a>
+            </div>
           </div>
 
           <div className="course-item">
@@ -629,6 +635,11 @@ const App = () => {
               🏥 Benefits: NHS access, pension scheme<br/>
               📈 Required for: Restaurant management roles
             </div>
+            <div className="course-links">
+              <a href="https://foodsafety.gov/" target="_blank" rel="noopener noreferrer" className="course-link">FDA Food Safety</a>
+              <a href="https://servsafe.com/" target="_blank" rel="noopener noreferrer" className="course-link">ServSafe Certification</a>
+              <a href="https://food.gov.uk/business-guidance" target="_blank" rel="noopener noreferrer" className="course-link">UK Food Standards</a>
+            </div>
           </div>
         </div>
 
@@ -642,6 +653,12 @@ const App = () => {
               🌍 Location: Work from anywhere<br/>
               📈 Skills: Communication, time management, digital tools
             </div>
+            <div className="course-links">
+              <a href="https://nomadlist.com/" target="_blank" rel="noopener noreferrer" className="course-link">Nomad List Community</a>
+              <a href="https://remoteyear.com/" target="_blank" rel="noopener noreferrer" className="course-link">Remote Year Programs</a>
+              <a href="https://udemy.com/course/digital-nomad-lifestyle/" target="_blank" rel="noopener noreferrer" className="course-link">Nomad Lifestyle Course</a>
+              <a href="https://makemydrivefun.com" target="_blank" rel="noopener noreferrer" className="course-link">Drive Optimization</a>
+            </div>
           </div>
 
           <div className="course-item">
@@ -651,6 +668,29 @@ const App = () => {
               💼 Average Salary: $75,000 - $120,000<br/>
               🏥 Benefits: Premium health, stock options<br/>
               📈 Growth: High demand, constant learning
+            </div>
+            <div className="course-links">
+              <a href="https://freecodecamp.org/" target="_blank" rel="noopener noreferrer" className="course-link">FreeCodeCamp</a>
+              <a href="https://codecademy.com/" target="_blank" rel="noopener noreferrer" className="course-link">Codecademy</a>
+              <a href="https://theodinproject.com/" target="_blank" rel="noopener noreferrer" className="course-link">The Odin Project</a>
+              <a href="https://github.com/microsoft/Web-Dev-For-Beginners" target="_blank" rel="noopener noreferrer" className="course-link">Microsoft Web Dev</a>
+              <a href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" rel="noopener noreferrer" className="course-link">MDN Web Docs</a>
+            </div>
+          </div>
+
+          <div className="course-item">
+            <div className="course-title">Remote Team Management</div>
+            <div className="course-provider">Virtual Leadership Institute</div>
+            <div className="course-benefits">
+              💼 Manager Salary: $80,000 - $150,000<br/>
+              🎯 Skills: Leadership, communication, project management<br/>
+              📈 Demand: Critical for distributed teams
+            </div>
+            <div className="course-links">
+              <a href="https://slack.com/resources/articles/remote-work" target="_blank" rel="noopener noreferrer" className="course-link">Slack Remote Guide</a>
+              <a href="https://zapier.com/learn/remote-work/" target="_blank" rel="noopener noreferrer" className="course-link">Zapier Remote Resources</a>
+              <a href="https://buffer.com/resources/remote-work/" target="_blank" rel="noopener noreferrer" className="course-link">Buffer Remote Guide</a>
+              <a href="https://trello.com/remote-work-guide" target="_blank" rel="noopener noreferrer" className="course-link">Trello Remote Guide</a>
             </div>
           </div>
         </div>
@@ -664,6 +704,48 @@ const App = () => {
               📋 Visa Types: Skilled Worker, Global Talent<br/>
               💰 Processing Cost: £1,200 - £3,000<br/>
               ⏱️ Timeline: 3-8 weeks processing
+            </div>
+            <div className="course-links">
+              <a href="https://gov.uk/government/organisations/uk-visas-and-immigration" target="_blank" rel="noopener noreferrer" className="course-link">UK Visas & Immigration</a>
+              <a href="https://gov.uk/skilled-worker-visa" target="_blank" rel="noopener noreferrer" className="course-link">Skilled Worker Visa</a>
+              <a href="https://gov.uk/global-talent-visa" target="_blank" rel="noopener noreferrer" className="course-link">Global Talent Visa</a>
+              <a href="https://britishcouncil.org/exam/ielts" target="_blank" rel="noopener noreferrer" className="course-link">IELTS English Test</a>
+            </div>
+          </div>
+
+          <div className="course-item">
+            <div className="course-title">International Moving & Logistics</div>
+            <div className="course-provider">Global Relocation Network</div>
+            <div className="course-benefits">
+              📦 Services: Shipping, customs, storage<br/>
+              💰 Cost Range: £5,000 - £15,000<br/>
+              ⏱️ Timeline: 6-12 weeks door-to-door
+            </div>
+            <div className="course-links">
+              <a href="https://sevencorners.com/international-moving" target="_blank" rel="noopener noreferrer" className="course-link">Seven Corners Moving</a>
+              <a href="https://alliedvanlines.com/moving-tips/international" target="_blank" rel="noopener noreferrer" className="course-link">Allied International</a>
+              <a href="https://sirelo.com/international-moving/" target="_blank" rel="noopener noreferrer" className="course-link">Sirelo Moving Guide</a>
+              <a href="https://expatfocus.com/moving-abroad" target="_blank" rel="noopener noreferrer" className="course-link">Expat Focus Guide</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="learning-section">
+          <h3>🎯 PRODUCTIVITY & TOOLS</h3>
+          <div className="course-item">
+            <div className="course-title">Remote Work Productivity Stack</div>
+            <div className="course-provider">Productivity Professionals Network</div>
+            <div className="course-benefits">
+              🛠️ Tools: Slack, Zoom, Notion, Asana<br/>
+              📈 Efficiency: +40% productivity increase<br/>
+              💡 Skills: Time management, focus techniques
+            </div>
+            <div className="course-links">
+              <a href="https://notion.so/product" target="_blank" rel="noopener noreferrer" className="course-link">Notion Workspace</a>
+              <a href="https://asana.com/" target="_blank" rel="noopener noreferrer" className="course-link">Asana Project Management</a>
+              <a href="https://zoom.us/" target="_blank" rel="noopener noreferrer" className="course-link">Zoom Video Meetings</a>
+              <a href="https://slack.com/" target="_blank" rel="noopener noreferrer" className="course-link">Slack Communication</a>
+              <a href="https://toggl.com/" target="_blank" rel="noopener noreferrer" className="course-link">Toggl Time Tracking</a>
             </div>
           </div>
         </div>
