@@ -600,6 +600,221 @@ body, html {
   font-size: 0.8rem;
   opacity: 0.7;
   line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.job-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.job-link {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.job-link:hover {
+  background: #00ff41;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.4);
+}
+
+/* NETWORK SCANNER ENHANCEMENTS */
+.network-tools {
+  margin-bottom: 20px;
+}
+
+.tools-section {
+  margin-bottom: 20px;
+}
+
+.tools-section h3 {
+  color: #00ff41;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+  padding-bottom: 5px;
+}
+
+.tool-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.tool-link {
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-link:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: #00ff41;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+/* LEARNING VAULT ENHANCEMENTS */
+.course-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.course-link {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.course-link:hover {
+  background: #00ff41;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.4);
+}
+
+/* FINANCIAL TRACKER ENHANCEMENTS */
+.financial-tools {
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.financial-link {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 45px;
+}
+
+.financial-link:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: #00ff41;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+/* RELOCATION MATRIX ENHANCEMENTS */
+.relocation-tools {
+  margin-top: 20px;
+}
+
+.relocation-section {
+  background: rgba(0, 255, 65, 0.05);
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.relocation-section h3 {
+  color: #00ff41;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+  padding-bottom: 5px;
+}
+
+.relocation-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.relocation-link {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+}
+
+.relocation-link:hover {
+  background: rgba(0, 255, 65, 0.2);
+  border-color: #00ff41;
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+/* GAMING ENHANCEMENTS */
+.gaming-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.gaming-link {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: #00ff41;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.gaming-link:hover {
+  background: #00ff41;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.4);
 }
 
 /* Enhanced Terminal Styles */
