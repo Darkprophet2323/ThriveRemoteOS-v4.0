@@ -355,6 +355,63 @@ const App = () => {
           <span className="scan-status error">●</span> CLASSIFIED SERVERS: ACCESS RESTRICTED
         </div>
       </div>
+      
+      <div className="network-tools">
+        <div className="tools-section">
+          <h3>🌐 NETWORK ANALYSIS TOOLS</h3>
+          <div className="tool-links">
+            <a href="https://speedtest.net/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              📡 Internet Speed Test
+            </a>
+            <a href="https://downdetector.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              🔍 Service Status Checker
+            </a>
+            <a href="https://whatismyipaddress.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              🌍 IP Address Lookup
+            </a>
+            <a href="https://mxtoolbox.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              🛠️ MX Toolbox Network Tools
+            </a>
+          </div>
+        </div>
+
+        <div className="tools-section">
+          <h3>🚗 REMOTE WORK TRAVEL TOOLS</h3>
+          <div className="tool-links">
+            <a href="https://makemydrivefun.com" target="_blank" rel="noopener noreferrer" className="tool-link">
+              🚗 Make My Drive Fun
+            </a>
+            <a href="https://waze.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              🗺️ Waze Navigation
+            </a>
+            <a href="https://maps.google.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              📍 Google Maps
+            </a>
+            <a href="https://gasbuddy.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              ⛽ GasBuddy Fuel Prices
+            </a>
+          </div>
+        </div>
+
+        <div className="tools-section">
+          <h3>💼 PROFESSIONAL NETWORKING</h3>
+          <div className="tool-links">
+            <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              💼 LinkedIn Professional
+            </a>
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              💻 GitHub Developer Hub
+            </a>
+            <a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              ❓ Stack Overflow
+            </a>
+            <a href="https://dev.to/" target="_blank" rel="noopener noreferrer" className="tool-link">
+              📝 Dev.to Community
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="network-map">
         <div className="map-title">LIVE NETWORK TOPOLOGY</div>
         <div className="network-grid">
