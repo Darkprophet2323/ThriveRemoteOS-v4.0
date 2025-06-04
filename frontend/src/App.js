@@ -810,7 +810,371 @@ const App = () => {
     </div>
   );
 
-  const NetworkGames = () => (
+  const RelocationMatrix = () => (
+    <div className="relocation-matrix">
+      <div className="relocation-header">
+        <span className="relocation-prompt">relocation@matrix:~$</span> analyze-route --arizona-to-peak-district
+      </div>
+      
+      <div className="relocation-tools">
+        <div className="relocation-section">
+          <h3>🏡 PROPERTY SEARCH & ANALYSIS</h3>
+          <div className="relocation-links">
+            <a href="https://rightmove.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏠 Rightmove UK Properties
+            </a>
+            <a href="https://zoopla.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏘️ Zoopla Property Portal
+            </a>
+            <a href="https://onthemarket.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📍 OnTheMarket
+            </a>
+            <a href="https://primelocation.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⭐ Prime Location
+            </a>
+            <a href="https://spareroom.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🛏️ SpareRoom Rentals
+            </a>
+            <a href="https://openrent.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🔑 OpenRent
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>📊 COST OF LIVING COMPARISON</h3>
+          <div className="relocation-links">
+            <a href="https://numbeo.com/cost-of-living/compare_cities.jsp?country1=United+States&city1=Phoenix%2C+AZ&country2=United+Kingdom&city2=Sheffield" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📊 Numbeo Cost Compare
+            </a>
+            <a href="https://expatistan.com/cost-of-living/comparison/phoenix/sheffield" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💰 Expatistan Compare
+            </a>
+            <a href="https://teleport.org/compare/phoenix-vs-sheffield/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 Teleport Cities
+            </a>
+            <a href="https://livingcost.org/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💡 Living Cost Calculator
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🛂 VISA & IMMIGRATION</h3>
+          <div className="relocation-links">
+            <a href="https://gov.uk/government/organisations/uk-visas-and-immigration" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🇬🇧 UK Visas & Immigration
+            </a>
+            <a href="https://gov.uk/skilled-worker-visa" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💼 Skilled Worker Visa
+            </a>
+            <a href="https://gov.uk/global-talent-visa" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌟 Global Talent Visa
+            </a>
+            <a href="https://britishcouncil.org/exam/ielts" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📝 IELTS English Test
+            </a>
+            <a href="https://oisc.gov.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⚖️ Immigration Advisers
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>📦 INTERNATIONAL MOVING</h3>
+          <div className="relocation-links">
+            <a href="https://sevencorners.com/international-moving" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📦 Seven Corners Moving
+            </a>
+            <a href="https://alliedvanlines.com/moving-tips/international" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚚 Allied International
+            </a>
+            <a href="https://sirelo.com/international-moving/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 Sirelo Moving Guide
+            </a>
+            <a href="https://expatfocus.com/moving-abroad" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🎯 Expat Focus Guide
+            </a>
+            <a href="https://makemydrivefun.com" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚗 Drive Route Optimizer
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🏥 HEALTHCARE & SERVICES</h3>
+          <div className="relocation-links">
+            <a href="https://nhs.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏥 NHS Healthcare
+            </a>
+            <a href="https://gov.uk/nhs-entitlements-costs" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💷 NHS Costs & Entitlements
+            </a>
+            <a href="https://bupa.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏥 Bupa Private Health
+            </a>
+            <a href="https://axa-health.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🩺 AXA Health Insurance
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🚌 TRANSPORT & TRAVEL</h3>
+          <div className="relocation-links">
+            <a href="https://nationalrail.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚂 National Rail
+            </a>
+            <a href="https://traveline.info/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚌 Traveline Public Transport
+            </a>
+            <a href="https://aa.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🚗 AA Route Planner
+            </a>
+            <a href="https://google.com/maps" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🗺️ Google Maps
+            </a>
+            <a href="https://citymapper.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📱 Citymapper
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🎓 EDUCATION & SCHOOLS</h3>
+          <div className="relocation-links">
+            <a href="https://gov.uk/school-admissions" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏫 UK School Admissions
+            </a>
+            <a href="https://compare-school-performance.service.gov.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📊 School Performance Data
+            </a>
+            <a href="https://ucas.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🎓 UCAS Universities
+            </a>
+            <a href="https://sheffield.ac.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏛️ University of Sheffield
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>🏦 BANKING & FINANCE</h3>
+          <div className="relocation-links">
+            <a href="https://lloydsbank.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🏦 Lloyds Bank
+            </a>
+            <a href="https://hsbc.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🌍 HSBC International
+            </a>
+            <a href="https://barclays.co.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💳 Barclays Banking
+            </a>
+            <a href="https://monzo.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📱 Monzo Digital Bank
+            </a>
+            <a href="https://xe.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              💱 XE Currency Exchange
+            </a>
+          </div>
+        </div>
+
+        <div className="relocation-section">
+          <h3>📱 UK LIFESTYLE & UTILITIES</h3>
+          <div className="relocation-links">
+            <a href="https://ofcom.org.uk/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📡 Ofcom Communications
+            </a>
+            <a href="https://bt.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📞 BT Broadband & Phone
+            </a>
+            <a href="https://sky.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              📺 Sky TV & Internet
+            </a>
+            <a href="https://uswitch.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              ⚡ uSwitch Utilities
+            </a>
+            <a href="https://comparethemarket.com/" target="_blank" rel="noopener noreferrer" className="relocation-link">
+              🔍 Compare the Market
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="relocation-summary">
+        <h3>📈 ARIZONA → PEAK DISTRICT SUMMARY</h3>
+        <div className="summary-stats">
+          <div className="summary-item">
+            <span className="summary-label">💰 Living Costs:</span>
+            <span className="summary-value">-20% cheaper</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🏠 Housing:</span>
+            <span className="summary-value">+15% more expensive</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🚌 Transport:</span>
+            <span className="summary-value">+40% savings</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">🏥 Healthcare:</span>
+            <span className="summary-value">FREE NHS</span>
+          </div>
+          <div className="summary-item">
+            <span className="summary-label">💸 Moving Cost:</span>
+            <span className="summary-value">£8,000-£12,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const FinancialTracker = () => {
+    const [newAmount, setNewAmount] = useState('');
+    
+    const updateSavings = async () => {
+      if (!newAmount || isNaN(newAmount)) return;
+      
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/savings/update?amount=${parseFloat(newAmount)}`, {
+          method: 'POST'
+        });
+        const result = await response.json();
+        
+        setNotifications(prev => [...prev, {
+          id: 'savings_update',
+          type: 'success',
+          title: '💰 Financial Data Updated!',
+          message: `${result.message || 'Savings updated successfully'} (+10 points)`,
+          timestamp: new Date().toISOString()
+        }]);
+        
+        setNewAmount('');
+        
+        // Refresh to show updated data
+        setTimeout(() => window.location.reload(), 2000);
+      } catch (error) {
+        console.error('Error updating savings:', error);
+      }
+    };
+
+    const defaultSavings = savings || {
+      current_amount: 1847.50,
+      progress_percentage: 36.95,
+      monthly_target: 500,
+      months_to_goal: 7,
+      streak_bonus: 347.50,
+      daily_streak: 14
+    };
+
+    return (
+      <div className="financial-tracker">
+        <div className="financial-header">
+          <span className="financial-prompt">financial@tracker:~$</span> analyze-savings --goal=5000 --relocation-fund
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex gap-2 mb-2">
+            <input
+              type="number"
+              value={newAmount}
+              onChange={(e) => setNewAmount(e.target.value)}
+              placeholder="Enter new savings amount"
+              className="terminal-input flex-1 px-3 py-2 bg-gray-800 text-white rounded border border-gray-600"
+            />
+            <button onClick={updateSavings} className="cyber-button">
+              💰 UPDATE SAVINGS
+            </button>
+          </div>
+          <span className="text-gray-400 text-sm">Track your relocation fund progress & earn streak bonuses</span>
+        </div>
+
+        <div className="mt-4">
+          <div className="savings-progress-container achievement-glow">
+            <div className="flex justify-between text-white mb-2">
+              <span>Progress to $5,000 Relocation Goal</span>
+              <span>${defaultSavings.current_amount.toFixed(2)}</span>
+            </div>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${defaultSavings.progress_percentage}%` }}
+              ></div>
+            </div>
+            <div className="text-center mt-2 text-green-400 font-bold">
+              {defaultSavings.progress_percentage.toFixed(1)}% Complete
+            </div>
+            {defaultSavings.streak_bonus > 0 && (
+              <div className="text-center mt-1 text-orange-400 text-sm">
+                🔥 Streak Bonus: +${defaultSavings.streak_bonus} ({defaultSavings.daily_streak} days)
+              </div>
+            )}
+          </div>
+          
+          <div className="financial-tools mt-6">
+            <h3 className="text-cyan-400 mb-4">💰 FINANCIAL PLANNING TOOLS</h3>
+            <div className="tool-links grid grid-cols-2 gap-2">
+              <a href="https://mint.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                💳 Mint Budget Tracking
+              </a>
+              <a href="https://ynab.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                📊 YNAB Budgeting
+              </a>
+              <a href="https://personalcapital.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                📈 Personal Capital
+              </a>
+              <a href="https://nerdwallet.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🎯 NerdWallet Advice
+              </a>
+              <a href="https://bankrate.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🏦 Bankrate Calculator
+              </a>
+              <a href="https://xe.com/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                💱 XE Currency Exchange
+              </a>
+            </div>
+            
+            <h3 className="text-cyan-400 mb-4 mt-6">🏠 RELOCATION FINANCIAL TOOLS</h3>
+            <div className="tool-links grid grid-cols-2 gap-2">
+              <a href="https://numbeo.com/cost-of-living/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                📊 Cost of Living Compare
+              </a>
+              <a href="https://taxcalculator.uk/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🇬🇧 UK Tax Calculator
+              </a>
+              <a href="https://smartasset.com/taxes/income-taxes" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🇺🇸 US Tax Calculator
+              </a>
+              <a href="https://rightmove.co.uk/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🏡 UK Property Prices
+              </a>
+              <a href="https://zoopla.co.uk/" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🏘️ UK Property Search
+              </a>
+              <a href="https://makemydrivefun.com" target="_blank" rel="noopener noreferrer" className="financial-link">
+                🚗 Travel Cost Optimizer
+              </a>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="stat-card">
+              <div className="stat-value">${defaultSavings.monthly_target}</div>
+              <div className="stat-label">Monthly Target</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">{defaultSavings.months_to_goal}</div>
+              <div className="stat-label">Months to Goal</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">${(5000 - defaultSavings.current_amount).toFixed(0)}</div>
+              <div className="stat-label">Remaining</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
     <div className="network-games">
       <div className="games-header">
         <span className="games-prompt">games@network:~$</span> load-entertainment-protocols
