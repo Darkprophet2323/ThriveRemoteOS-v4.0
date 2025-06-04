@@ -1175,6 +1175,36 @@ const App = () => {
       </div>
     );
   };
+
+  const NetworkGames = () => (
+    <div className="network-games">
+      <div className="games-header">
+        <span className="games-prompt">games@network:~$</span> load-entertainment-protocols
+      </div>
+      
+      <div className="games-grid">
+        <div className="game-card" onClick={() => openWindow('pong_terminal', 'RETRO PONG', 'PongGame')}>
+          <div className="game-icon">🏓</div>
+          <div className="game-title">RETRO PONG</div>
+          <div className="game-desc">Classic arcade action</div>
+          <div className="high-score">High Score: {userStats.totalPoints}</div>
+        </div>
+        
+        <div className="game-card" onClick={() => openWindow('snake_protocol', 'SNAKE PROTOCOL', 'SnakeGame')}>
+          <div className="game-icon">🐍</div>
+          <div className="game-title">SNAKE PROTOCOL</div>
+          <div className="game-desc">Terminal snake game</div>
+        </div>
+
+        <div className="game-card" onClick={() => openWindow('matrix_rain', 'MATRIX RAIN', 'MatrixRain')}>
+          <div className="game-icon">🌧️</div>
+          <div className="game-title">MATRIX RAIN</div>
+          <div className="game-desc">Digital meditation</div>
+        </div>
+      </div>
+    </div>
+  );
+
   const RelocationMatrix = () => (
     <div className="relocation-matrix">
       <div className="relocation-header">
