@@ -117,15 +117,49 @@ body, html {
   50% { opacity: 0; }
 }
 
-.desktop-bg::after {
-  content: '';
+/* NETWORK PORTAL MAIN INTERFACE */
+.network-portal {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  color: #00ff41;
+  cursor: crosshair;
+}
+
+/* DOT MATRIX BACKGROUND */
+.dot-matrix {
   position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(34, 211, 238, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.2) 0%, transparent 50%);
-  animation: floatingLights 15s ease-in-out infinite;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.matrix-dot {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(0, 255, 65, 0.1);
+  border-radius: 50%;
+}
+
+.matrix-dot:nth-child(20n) {
+  background: rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 3px rgba(0, 255, 65, 0.5);
+}
+
+.network-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
 }
 
 @keyframes backgroundPulse {
