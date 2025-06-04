@@ -1269,9 +1269,21 @@ async def manual_unlock_achievement(achievement_id: str, session_token: str):
 
 @app.post("/api/terminal/command")
 async def execute_terminal_command(command: dict):
-    """Execute terminal command and track usage (demo mode)"""
+    """Execute terminal command and track usage (network mode)"""
     cmd = command.get("command", "").lower().strip()
-    user_id = "demo_user"  # Fixed demo user
+    user_id = "network_user"  # Default network user
+    
+    try:
+        user = await get_or_create_user(user_id)
+    except:
+        # Fallback for demo mode
+        user = {
+            "user_id": user_id,
+            "username": "NetworkUser",
+            "daily_streak": 14,
+            "productivity_score": 2847,
+            "commands_executed": 150
+        }
     user = await get_or_create_user(user_id)
     
     # Increment command counter
