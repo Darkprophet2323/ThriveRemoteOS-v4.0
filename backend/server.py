@@ -1300,39 +1300,51 @@ async def execute_terminal_command(command: dict):
     if commands_executed >= 50:
         await unlock_achievement(user_id, "terminal_ninja")
     
-    # Enhanced responses with real data
+    # Enhanced hacker-style responses with real data
     responses = {
         "help": {
             "output": [
-                "ThriveRemote Terminal v3.0 - Live Data Command Reference:",
+                "ThriveRemote Network Terminal v4.0 - MATRIX EDITION",
                 "",
-                "🎯 PRODUCTIVITY:",
-                "  jobs           - List REAL remote job opportunities",
-                "  apply <id>     - Apply to jobs (tracked in your profile)",
-                "  savings        - Show YOUR actual savings progress",
-                "  tasks          - List YOUR personal tasks",
-                "  stats          - Show YOUR live productivity stats",
+                "🌐 NETWORK RECONNAISSANCE:",
+                "  scan           - Perform network topology scan",
+                "  jobs           - List LIVE remote job opportunities", 
+                "  apply <id>     - Apply to remote positions (network tracked)",
+                "  savings        - Display financial tracking data",
+                "  tasks          - List active mission directives",
+                "  stats          - Show real-time network statistics",
                 "",
-                "🏡 RELOCATION:",
-                "  relocate       - Explore Phoenix to Peak District relocation data",
-                "  properties     - View available properties in Peak District",
-                "  costs          - Compare living costs Phoenix vs Peak District",
+                "🏡 RELOCATION PROTOCOL:",
+                "  relocate       - Access Arizona to Peak District data",
+                "  properties     - View available properties database",
+                "  costs          - Compare living costs analysis",
+                "  visa           - UK immigration requirements",
                 "",
-                "🎮 FUN & EASTER EGGS:",
-                "  pong           - Launch Pong game (scores saved)",
-                "  matrix         - Enter the Matrix",
-                "  konami         - Try the Konami code sequence",
-                "  coffee         - Get a coffee break suggestion",
-                "  motivate       - Get a motivational quote",
+                "🎮 ENTERTAINMENT PROTOCOLS:",
+                "  pong           - Launch retro gaming protocol",
+                "  matrix         - Enter the Matrix simulation",
+                "  hack           - Initiate hacking mini-games",
                 "",
-                "🔧 SYSTEM:",
-                "  clear          - Clear terminal",
-                "  time           - Show current time",
-                "  version        - Show system version",
-                "  whoami         - Show YOUR user info",
-                "  profile        - Show YOUR complete profile",
+                "🔧 SYSTEM OPERATIONS:",
+                "  clear          - Clear terminal buffer",
+                "  time           - Display system chronometer",
+                "  version        - Show system version info",
+                "  whoami         - Display network identity",
+                "  status         - Network portal status report",
                 "",
-                "💡 TIP: All your data is saved and tracked in real-time!"
+                "💡 NETWORK TIP: All data is real-time and live-synced!"
+            ]
+        },
+        "scan": {
+            "output": [
+                "🌐 INITIATING NETWORK SCAN...",
+                "",
+                "ARIZONA NETWORKS: 127 active connections detected",
+                "PEAK DISTRICT LAN: 89 nodes operational",
+                "REMOTE WORK PORTALS: 1,247 opportunities found",
+                "CLASSIFIED SERVERS: 15 restricted access points",
+                "",
+                "✅ SCAN COMPLETE - Use network scanner app for topology"
             ]
         },
         "jobs": {
