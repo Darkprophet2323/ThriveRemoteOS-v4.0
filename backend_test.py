@@ -8,7 +8,7 @@ import time
 class ThriveRemoteAPITester(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(ThriveRemoteAPITester, self).__init__(*args, **kwargs)
-        self.base_url = "https://48d504fc-72cd-4ce7-9458-aaa85b7c09c6.preview.emergentagent.com"
+        self.base_url = "https://d4eefee8-e079-47ad-bd0f-edfa484a1c16.preview.emergentagent.com"
         self.tests_run = 0
         self.tests_passed = 0
         self.username = "testuser123"
